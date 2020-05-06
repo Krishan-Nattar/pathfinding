@@ -4,10 +4,9 @@ import './Node.css';
 const Node = (props) => {
 
     const [dynamicClassName, setDynamicClassName] = useState("");
-    const {isStart, isEnd, visiting, wasVisited} = props;
+    const {isStart, isEnd, visiting, wasVisited, isBlocked} = props;
 
     useEffect(()=>{
-        // ${props.isStart ? 'start-node' : ""} ${props.isEnd ? `end-node` : ''} ${props.visiting ? "" : ""} ${props.wasVisited ? "" : ""}
 
         if(isStart){
             setDynamicClassName('start-node')
@@ -17,18 +16,20 @@ const Node = (props) => {
             setDynamicClassName('visiting')
         } else if(wasVisited){
             setDynamicClassName('visited')
+        } else if(isBlocked){
+            setDynamicClassName("blocked")
         } else {
             setDynamicClassName("")
-        }
+        } 
 
-    },[isStart, isEnd, visiting, wasVisited])
+    },[isStart, isEnd, visiting, wasVisited, isBlocked])
 
 	const handleMouseDown = (e) => {
         const {row, column} = props;
         let copyNodes = [...props.nodes]
         let thisNode = copyNodes[row][column];
 
-        if(props.selectStartNode && thisNode.isEnd === false){
+        if(props.selectStartNode && !thisNode.isEnd){
             for(const row of copyNodes){
                 for(const col of row){
                     col.isStart = false;
@@ -36,7 +37,7 @@ const Node = (props) => {
             }
             thisNode.isStart = true;
             props.setSelectStartNode(false);
-        } else if(props.selectEndNode && thisNode.isStart === false){
+        } else if(props.selectEndNode && !thisNode.isStart){
             for(const row of copyNodes){
                 for(const col of row){
                     col.isEnd = false;
@@ -44,21 +45,16 @@ const Node = (props) => {
             }
             thisNode.isEnd = true;
             props.setSelectEndNode(false);
+        } else if (!props.selectStartNode && !props.selectEndNode) {
+			let node = e.target;
+			if (!node.classList.contains('start-node') && !node.classList.contains('end-node')) {
+                thisNode.isBlocked = true;
+				// props.setMouseDown(true);
+			}
         }
 
         props.setNodes(copyNodes);
 
-		// if (!props.selectStartNode && !props.selectEndNode) {
-		// 	let node = e.target;
-		// 	if (!node.classList.contains('start-node')) {
-		// 		node.classList.toggle('toggler');
-		// 		props.setMouseDown(true);
-		// 	}
-		// } else if (props.selectStartNode) {
-		// 	let node = e.target;
-		// 	if (node.classList.contains('end-node')) {
-		// 		return;
-		// 	}
 
 		// 	const nodeList = document.querySelectorAll('.node');
 		// 	for (const node of nodeList)

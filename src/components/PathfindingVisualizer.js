@@ -10,72 +10,74 @@ const PathfindingVisualizer = (props) => {
 	const rowCount = 20;
 	const columnCount = 25;
 
-    const [queue, setQueue] = useState();
-    const [finalPath, setFinalPath] = useState();
+	const [queue, setQueue] = useState();
+	const [finalPath, setFinalPath] = useState();
 
-    const handleBFS = () =>{
-        let q = new Queue(queue.nodes)
-			let copyNodes = [...nodes];
-			if (!q.isEmpty()) {
-				let currentPath = q.dequeue();
-				let currentNode = currentPath[currentPath.length - 1];
-				let rowNumber = currentNode.row;
-				let colNumber = currentNode.column;
-				let checkNodes = [];
-				if (rowNumber > 0) {
-					checkNodes.push(copyNodes[rowNumber - 1][colNumber]);
-				}
-				if (colNumber > 0) {
-					checkNodes.push(copyNodes[rowNumber][colNumber - 1]);
-				}
-
-				if (rowNumber < rowCount - 1) {
-					checkNodes.push(copyNodes[rowNumber + 1][colNumber]);
-				}
-				if (colNumber < columnCount - 1) {
-					checkNodes.push(copyNodes[rowNumber][colNumber + 1]);
-				}
-
-				for (const node of checkNodes) {
-					if (!node.wasVisited && !node.isEnd) {
-						copyNodes[node.row][node.column].wasVisited = true;
-						q.enqueue([...currentPath, { row: node.row, column: node.column }]);
-						continue;
-					}
-					if (node.isEnd) {
-                        setFinalPath(currentPath)
-						return;
-					}
-				}
-                setNodes(copyNodes);
-                setTimeout(setQueue.bind(this, q), 5)
+	const handleBFS = () => {
+		let q = new Queue(queue.nodes);
+		let copyNodes = [...nodes];
+		if (!q.isEmpty()) {
+			let currentPath = q.dequeue();
+			let currentNode = currentPath[currentPath.length - 1];
+			let rowNumber = currentNode.row;
+			let colNumber = currentNode.column;
+			let checkNodes = [];
+			if (rowNumber > 0) {
+				checkNodes.push(copyNodes[rowNumber - 1][colNumber]);
 			}
-    }
+			if (colNumber > 0) {
+				checkNodes.push(copyNodes[rowNumber][colNumber - 1]);
+			}
+
+			if (rowNumber < rowCount - 1) {
+				checkNodes.push(copyNodes[rowNumber + 1][colNumber]);
+			}
+			if (colNumber < columnCount - 1) {
+				checkNodes.push(copyNodes[rowNumber][colNumber + 1]);
+			}
+
+			for (const node of checkNodes) {
+				if (!node.wasVisited && !node.isEnd && !node.isBlocked) {
+					copyNodes[node.row][node.column].wasVisited = true;
+					q.enqueue([...currentPath, { row: node.row, column: node.column }]);
+					continue;
+				}
+				if (node.isEnd) {
+					setFinalPath(currentPath);
+					return;
+				}
+			}
+			setNodes(copyNodes);
+			setTimeout(setQueue.bind(this, q), 5);
+		} else {
+			alert('Unable to find path');
+		}
+	};
 
 	// Handle BFS
 	useEffect(() => {
 		if (queue) {
-            handleBFS();
+			handleBFS();
 		}
-    }, [queue]);
+	}, [queue]);
 
-    useEffect(()=>{
-        if(finalPath){
-            let copyNodes = [...nodes]
-            if(finalPath.length > 0){
-                let row = finalPath[0].row
-                let column = finalPath[0].column
-                copyNodes[row][column].visiting = true;
-            }
-            setNodes(copyNodes)
-            let newPath = [...finalPath];
-            newPath.shift();
-            if(newPath.length > 0){
-                setTimeout(setFinalPath.bind(this, newPath), 0);
-            }
-        }
-    },[finalPath])
-    
+	useEffect(() => {
+		if (finalPath) {
+			let copyNodes = [...nodes];
+			if (finalPath.length > 0) {
+				let row = finalPath[0].row;
+				let column = finalPath[0].column;
+				copyNodes[row][column].visiting = true;
+			}
+			setNodes(copyNodes);
+			let newPath = [...finalPath];
+			newPath.shift();
+			if (newPath.length > 0) {
+				setTimeout(setFinalPath.bind(this, newPath), 0);
+			}
+		}
+	}, [finalPath]);
+
 	const handleClearSelected = () => {
 		initializeNodes();
 	};
@@ -124,6 +126,7 @@ const PathfindingVisualizer = (props) => {
 					isEnd: false,
 					visiting: false,
 					wasVisited: false,
+					isBlocked: false,
 				});
 			}
 			nodes.push(currentRow);
@@ -161,6 +164,7 @@ const PathfindingVisualizer = (props) => {
 									setNodes={setNodes}
 									visiting={node.visiting}
 									wasVisited={node.wasVisited}
+									isBlocked={node.isBlocked}
 								/>
 							);
 						})}
