@@ -23,6 +23,7 @@
 
 .visiting{
     background-color: purple;
+    transition: 0.5s;
 }
 
 .visited{
