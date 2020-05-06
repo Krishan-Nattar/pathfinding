@@ -24,6 +24,14 @@ const PathfindingVisualizer = (props) => {
 		setSelectEndNode(true);
     };
 
+    const sleep = (milliseconds) => {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+          currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+      }
+
     const handleStartAlgorithm = () =>{
 
         let beginningNode;
@@ -39,19 +47,12 @@ const PathfindingVisualizer = (props) => {
         }
 
         let q = new Queue();
-        // let currentNode = {
-        //     row: beginningNode.row,
-        //     column: beginningNode.column
-        // }
-
         q.enqueue([{
             row: beginningNode.row,
             column: beginningNode.column
         }])
 
-        // console.log(q);
         let finished = false;
-        // let found = false;
         let copyNodes = [...nodes]
         while(!q.isEmpty() && !finished){
             let currentPath = q.dequeue();
@@ -72,20 +73,16 @@ const PathfindingVisualizer = (props) => {
             if(colNumber < columnCount-1){
                 checkNodes.push(copyNodes[rowNumber][colNumber+1])
             }
-            let finishedList = []
 
             for(const node of checkNodes){
 
                 
                 if(!node.wasVisited && !node.isEnd){
                     copyNodes[node.row][node.column].wasVisited = true;
-                    // currentPath.push({row: node.row, column: node.column})
                     q.enqueue([...currentPath, {row: node.row, column: node.column}]);
                     continue;
                 }
                 if(node.isEnd){
-                    // console.log('here');
-                    // finishedList.push()
                     console.log(currentPath)
                     console.log(node);
                     finished = true;
@@ -93,6 +90,8 @@ const PathfindingVisualizer = (props) => {
                 }
             }
             setNodes(copyNodes);
+            sleep(200);
+
         }
 
 

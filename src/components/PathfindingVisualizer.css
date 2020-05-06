@@ -20,3 +20,11 @@
 .end-node{
     background-color: blue;
 }
+
+.visiting{
+    background-color: purple;
+}
+
+.visited{
+    background-color: teal;
+}
