@@ -3,6 +3,26 @@ import './Node.css';
 
 const Node = (props) => {
 
+    const [dynamicClassName, setDynamicClassName] = useState("");
+    const {isStart, isEnd, visiting, wasVisited} = props;
+
+    useEffect(()=>{
+        // ${props.isStart ? 'start-node' : ""} ${props.isEnd ? `end-node` : ''} ${props.visiting ? "" : ""} ${props.wasVisited ? "" : ""}
+
+        if(isStart){
+            setDynamicClassName('start-node')
+        } else if(isEnd){
+            setDynamicClassName('end-node')
+        } else if(visiting){
+            setDynamicClassName('visiting')
+        } else if(wasVisited){
+            setDynamicClassName('visited')
+        } else {
+            setDynamicClassName("")
+        }
+
+    },[isStart, isEnd, visiting, wasVisited])
+
 	const handleMouseDown = (e) => {
         const {row, column} = props;
         let copyNodes = [...props.nodes]
@@ -15,7 +35,6 @@ const Node = (props) => {
                 }
             }
             thisNode.isStart = true;
-            props.setNodes(copyNodes);
             props.setSelectStartNode(false);
         } else if(props.selectEndNode && thisNode.isStart === false){
             for(const row of copyNodes){
@@ -24,10 +43,10 @@ const Node = (props) => {
                 }
             }
             thisNode.isEnd = true;
-            props.setNodes(copyNodes);
             props.setSelectEndNode(false);
         }
-    
+
+        props.setNodes(copyNodes);
 
 		// if (!props.selectStartNode && !props.selectEndNode) {
 		// 	let node = e.target;
@@ -81,7 +100,7 @@ const Node = (props) => {
 	};
 	return (
 		<div
-			className={`node ${props.isStart ? 'start-node' : ""} ${props.isEnd ? `end-node` : ''}`}
+			className={`node ${dynamicClassName}`}
 			onMouseDown={handleMouseDown}
 			// onMouseOver={handleDrag}
             ></div>
