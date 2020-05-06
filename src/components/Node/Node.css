@@ -1,20 +1,19 @@
-.node{
-    width: 25px;
-    height: 25px;
-    outline: 1px solid black;
-    /* margin: 2px; */
-    display: inline-block;
-    /* position: relative; */
-    user-drag: none; 
-user-select: none;
--moz-user-select: none;
--webkit-user-drag: none;
--webkit-user-select: none;
--ms-user-select: none;
-    
+.node {
+	width: 25px;
+	height: 25px;
+	outline: 1px solid black;
+	/* margin: 2px; */
+	display: inline-block;
+	/* position: relative; */
+	/* user-drag: none;  */
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
-.toggler{
-    /* color: red; */
-    background-color: green;
+.toggler {
+	/* color: red; */
+	background-color: green;
 }

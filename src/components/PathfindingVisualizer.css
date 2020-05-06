@@ -8,3 +8,15 @@
 .grid{
     margin: 100px 0 0;
 }
+
+.selecting-node{
+    cursor: crosshair;
+}
+
+.start-node{
+    background-color: red;
+}
+
+.end-node{
+    background-color: blue;
+}
