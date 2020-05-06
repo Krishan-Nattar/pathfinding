@@ -1,0 +1,12 @@
+.node{
+    width: 10px;
+    height: 10px;
+    outline: 1px solid black;
+    /* margin: 2px; */
+    display: inline-block
+}
+
+.toggler{
+    color: red;
+    background-color: green;
+}
