@@ -3,9 +3,10 @@ import Node from './Node/Node';
 import './PathfindingVisualizer.css';
 
 
-const PathfindingVisualizer = () => {
+const PathfindingVisualizer = (props) => {
 
     const [nodes, setNodes] = useState([])
+    
 
     useEffect(()=>{
         console.log('hi')
@@ -21,13 +22,13 @@ const PathfindingVisualizer = () => {
     },[]);
 
     return ( 
-        <div>
-            PathfindingVisualizer
+        <div className="grid">
+            {/* PathfindingVisualizer */}
             {nodes.map((row, rowIndex)=>{
                 return (
                 <div key = {rowIndex} className="row">
                     {row.map((node, nodeIndex)=>{
-                        return <Node key={nodeIndex} />
+                        return <Node key={nodeIndex} mouseDown={props.mouseDown} setMouseDown={props.setMouseDown} />
                     })}
                 </div>
                 )

@@ -1,4 +1,10 @@
 .row{
-    margin: 0;
+    /* margin: 0; */
+    /* position: absolute; */
+    /* display: inline-block; */
     /* height: 10px; */
+}
+
+.grid{
+    margin: 100px 0 0;
 }
