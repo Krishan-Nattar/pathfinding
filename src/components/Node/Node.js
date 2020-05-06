@@ -15,7 +15,10 @@ const Node = (props) => {
         if(props.mouseDown === true){
             console.log('dragging')
             let node = e.target;
-            node.classList.toggle('toggler');
+            if(!node.classList.contains('toggler')){
+
+                node.classList.toggle('toggler');
+            }
         }
     }
     return ( 

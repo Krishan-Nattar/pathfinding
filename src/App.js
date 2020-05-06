@@ -11,7 +11,7 @@ function App() {
   }
 
   return (
-    <div className="App" onMouseUp={handleMouseUp} >
+    <div className="App" onMouseUp={handleMouseUp}>
       <PathfindingVisualizer mouseDown={mouseDown} setMouseDown={setMouseDown}/>
     </div>
   );
