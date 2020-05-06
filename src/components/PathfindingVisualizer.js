@@ -8,40 +8,47 @@ const PathfindingVisualizer = (props) => {
 	const [selectEndNode, setSelectEndNode] = useState(false);
 
 	const handleClearSelected = () => {
-		const nodeList = document.querySelectorAll('.node');
-		for (const node of nodeList) node.className = 'node';
-		// if (node.classList.contains('toggler')){
-		//     node.classList.toggle('toggler')
-		// }
+		initializeNodes();
 	};
 
 	const handleSelectStartingNode = (e) => {
-        setSelectStartNode(true);
-        setSelectEndNode(false);
-		// console.log('hi')
+		setSelectStartNode(true);
+		setSelectEndNode(false);
 	};
 
 	const handleSelectEndingNode = (e) => {
-		// console.log('hi')
 		setSelectStartNode(false);
 		setSelectEndNode(true);
 	};
 
-	useEffect(() => {
-		// console.log('hi')
+	const initializeNodes = (e) => {
 		const nodes = [];
-		for (let i = 0; i < 10; i++) {
+		for (let row = 0; row < 10; row++) {
 			const currentRow = [];
-			for (let j = 0; j < 20; j++) {
-				currentRow.push([]);
+			for (let col = 0; col < 20; col++) {
+				currentRow.push({
+					row,
+					col,
+					isStart: false,
+					isEnd: false,
+					visiting: false,
+					wasVisited: false,
+				});
 			}
 			nodes.push(currentRow);
 		}
 		setNodes(nodes);
+	};
+
+	useEffect(() => {
+		initializeNodes();
 	}, []);
 
 	return (
-		<div className={`grid ${selectStartNode || selectEndNode ? 'selecting-node' : null}`}>
+		<div
+			className={`grid ${
+				selectStartNode || selectEndNode ? 'selecting-node' : null
+			}`}>
 			{nodes.map((row, rowIndex) => {
 				return (
 					<div key={rowIndex} className="row">
@@ -52,10 +59,15 @@ const PathfindingVisualizer = (props) => {
 									mouseDown={props.mouseDown}
 									setMouseDown={props.setMouseDown}
 									selectStartNode={selectStartNode}
-                                    setSelectStartNode={setSelectStartNode}
-                                    setSelectEndNode={setSelectEndNode}
-                                    selectEndNode={selectEndNode}
-
+									setSelectStartNode={setSelectStartNode}
+									setSelectEndNode={setSelectEndNode}
+									selectEndNode={selectEndNode}
+									row={node.row}
+									column={node.col}
+									isStart={node.isStart}
+									isEnd={node.isEnd}
+									nodes={nodes}
+									setNodes={setNodes}
 								/>
 							);
 						})}
