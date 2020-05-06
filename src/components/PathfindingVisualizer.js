@@ -1,15 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import Node from './Node/Node';
-import {Queue} from './Queue';
+import { Queue } from './Queue';
 import './PathfindingVisualizer.css';
 
 const PathfindingVisualizer = (props) => {
 	const [nodes, setNodes] = useState([]);
 	const [selectStartNode, setSelectStartNode] = useState(false);
-    const [selectEndNode, setSelectEndNode] = useState(false);
-    const rowCount = 10;
-    const columnCount = 20;
+	const [selectEndNode, setSelectEndNode] = useState(false);
+	const rowCount = 20;
+	const columnCount = 25;
 
+    const [queue, setQueue] = useState();
+    const [finalPath, setFinalPath] = useState();
+
+	// Handle BFS
+	useEffect(() => {
+		if (queue) {
+
+            let q = new Queue(queue.nodes)
+			let copyNodes = [...nodes];
+			if (!q.isEmpty()) {
+				let currentPath = q.dequeue();
+				let currentNode = currentPath[currentPath.length - 1];
+				let rowNumber = currentNode.row;
+				let colNumber = currentNode.column;
+				let checkNodes = [];
+				if (rowNumber > 0) {
+					checkNodes.push(copyNodes[rowNumber - 1][colNumber]);
+				}
+				if (colNumber > 0) {
+					checkNodes.push(copyNodes[rowNumber][colNumber - 1]);
+				}
+
+				if (rowNumber < rowCount - 1) {
+					checkNodes.push(copyNodes[rowNumber + 1][colNumber]);
+				}
+				if (colNumber < columnCount - 1) {
+					checkNodes.push(copyNodes[rowNumber][colNumber + 1]);
+				}
+
+				for (const node of checkNodes) {
+					if (!node.wasVisited && !node.isEnd) {
+						copyNodes[node.row][node.column].wasVisited = true;
+						q.enqueue([...currentPath, { row: node.row, column: node.column }]);
+						continue;
+					}
+					if (node.isEnd) {
+						// console.log(currentPath);
+                        // console.log(node);
+                        setFinalPath(currentPath)
+						// finished = true;
+						return;
+					}
+				}
+                setNodes(copyNodes);
+                setTimeout(setQueue.bind(this, q), 0)
+                // setQueue(q);
+				// sleep(200);
+			}
+		}
+    }, [queue]);
+
+    useEffect(()=>{
+        if(finalPath){
+            let copyNodes = [...nodes]
+            if(finalPath.length > 0){
+                let row = finalPath[0].row
+                let column = finalPath[0].column
+                copyNodes[row][column].visiting = true;
+            }
+            setNodes(copyNodes)
+            let newPath = [...finalPath];
+            newPath.shift();
+            if(newPath.length > 0){
+                setTimeout(setFinalPath.bind(this, newPath), 0);
+            }
+        }
+    },[finalPath])
+    
 	const handleClearSelected = () => {
 		initializeNodes();
 	};
@@ -22,82 +90,78 @@ const PathfindingVisualizer = (props) => {
 	const handleSelectEndingNode = (e) => {
 		setSelectStartNode(false);
 		setSelectEndNode(true);
-    };
+	};
 
-    const sleep = (milliseconds) => {
-        const date = Date.now();
-        let currentDate = null;
-        do {
-          currentDate = Date.now();
-        } while (currentDate - date < milliseconds);
-      }
+	const sleep = (milliseconds) => {
+		const date = Date.now();
+		let currentDate = null;
+		do {
+			currentDate = Date.now();
+		} while (currentDate - date < milliseconds);
+	};
 
-    const handleStartAlgorithm = () =>{
+	const handleStartAlgorithm = () => {
+		let beginningNode;
+		outerloop: for (const row of nodes) {
+			for (const node of row) {
+				if (node.isStart) {
+					beginningNode = node;
+					break outerloop;
+				}
+			}
+		}
 
-        let beginningNode;
-        outerloop:
-        for(const row of nodes){
-            for(const node of row){
-                if(node.isStart){
-                    beginningNode = node;
-                    break outerloop;
+		let q = new Queue();
+		q.enqueue([
+			{
+				row: beginningNode.row,
+				column: beginningNode.column,
+			},
+		]);
 
-                }
-            }
-        }
+		setQueue(q);
 
-        let q = new Queue();
-        q.enqueue([{
-            row: beginningNode.row,
-            column: beginningNode.column
-        }])
+		// let finished = false;
+		// let copyNodes = [...nodes]
+		// while(!q.isEmpty() && !finished){
+		//     let currentPath = q.dequeue();
+		//     let currentNode = currentPath[currentPath.length-1]
+		//     let rowNumber = currentNode.row;
+		//     let colNumber = currentNode.column;
+		//     let checkNodes = []
+		//     if(rowNumber > 0){
+		//         checkNodes.push(copyNodes[rowNumber-1][colNumber])
+		//     }
+		//     if(colNumber > 0){
+		//         checkNodes.push(copyNodes[rowNumber][colNumber-1])
+		//     }
 
-        let finished = false;
-        let copyNodes = [...nodes]
-        while(!q.isEmpty() && !finished){
-            let currentPath = q.dequeue();
-            let currentNode = currentPath[currentPath.length-1]
-            let rowNumber = currentNode.row;
-            let colNumber = currentNode.column;
-            let checkNodes = []
-            if(rowNumber > 0){
-                checkNodes.push(copyNodes[rowNumber-1][colNumber])
-            }
-            if(colNumber > 0){
-                checkNodes.push(copyNodes[rowNumber][colNumber-1])
-            }
+		//     if(rowNumber < rowCount-1){
+		//         checkNodes.push(copyNodes[rowNumber+1][colNumber])
+		//     }
+		//     if(colNumber < columnCount-1){
+		//         checkNodes.push(copyNodes[rowNumber][colNumber+1])
+		//     }
 
-            if(rowNumber < rowCount-1){
-                checkNodes.push(copyNodes[rowNumber+1][colNumber])
-            }
-            if(colNumber < columnCount-1){
-                checkNodes.push(copyNodes[rowNumber][colNumber+1])
-            }
+		//     for(const node of checkNodes){
 
-            for(const node of checkNodes){
+		//         if(!node.wasVisited && !node.isEnd){
+		//             copyNodes[node.row][node.column].wasVisited = true;
+		//             q.enqueue([...currentPath, {row: node.row, column: node.column}]);
+		//             continue;
+		//         }
+		//         if(node.isEnd){
+		//             console.log(currentPath)
+		//             console.log(node);
+		//             finished = true;
+		//             break;
+		//         }
+		//     }
+		//     setNodes(copyNodes);
+		//     sleep(200);
 
-                
-                if(!node.wasVisited && !node.isEnd){
-                    copyNodes[node.row][node.column].wasVisited = true;
-                    q.enqueue([...currentPath, {row: node.row, column: node.column}]);
-                    continue;
-                }
-                if(node.isEnd){
-                    console.log(currentPath)
-                    console.log(node);
-                    finished = true;
-                    break;
-                }
-            }
-            setNodes(copyNodes);
-            sleep(200);
-
-        }
-
-
-    }
-    
-
+		// }
+	};
 
 	const initializeNodes = (e) => {
 		const nodes = [];
@@ -119,7 +183,7 @@ const PathfindingVisualizer = (props) => {
 	};
 
 	useEffect(() => {
-        initializeNodes();
+		initializeNodes();
 	}, []);
 
 	return (
@@ -145,9 +209,9 @@ const PathfindingVisualizer = (props) => {
 									isStart={node.isStart}
 									isEnd={node.isEnd}
 									nodes={nodes}
-                                    setNodes={setNodes}
-                                    visiting={node.visiting}
-                                    wasVisited={node.wasVisited}
+									setNodes={setNodes}
+									visiting={node.visiting}
+									wasVisited={node.wasVisited}
 								/>
 							);
 						})}
@@ -157,7 +221,7 @@ const PathfindingVisualizer = (props) => {
 			<button onClick={handleClearSelected}>Clear Selected</button>
 			<button onClick={handleSelectStartingNode}>Select Starting Node</button>
 			<button onClick={handleSelectEndingNode}>Select Ending Node</button>
-            <button onClick={handleStartAlgorithm}>Begin</button>
+			<button onClick={handleStartAlgorithm}>Begin</button>
 		</div>
 	);
 };

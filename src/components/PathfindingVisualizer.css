@@ -27,4 +27,5 @@
 
 .visited{
     background-color: teal;
+    transition: 0.5s;
 }

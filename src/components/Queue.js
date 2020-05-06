@@ -1,7 +1,7 @@
 export class Queue {
-    constructor()
+    constructor(nodes = [])
     {
-        this.nodes = []
+        this.nodes = nodes
     }
 
     enqueue(node){
