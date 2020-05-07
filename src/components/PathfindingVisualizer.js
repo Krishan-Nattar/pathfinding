@@ -201,6 +201,15 @@ const PathfindingVisualizer = (props) => {
 	};
 
 	const handleStartAlgorithm = () => {
+		let visitedNodes = document.querySelectorAll('.visited');
+		let pathNodes = document.querySelectorAll('.visiting');
+
+		for(const node of visitedNodes){
+			node.classList.toggle('visited')
+		}
+		for(const node of pathNodes){
+			node.classList.toggle('visiting')
+		}
 		let beginningNode;
 
 		outerloop: for (const row of nodes) {
