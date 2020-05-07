@@ -26,7 +26,8 @@ const Node = (props) => {
 
 	const handleMouseDown = (e) => {
         const {row, column} = props;
-        let copyNodes = [...props.nodes]
+        // let copyNodes = [...props.nodes]
+        let copyNodes = JSON.parse(JSON.stringify(props.nodes))
         let thisNode = copyNodes[row][column];
 
         if(props.selectStartNode && !thisNode.isEnd){
@@ -37,6 +38,7 @@ const Node = (props) => {
             }
             thisNode.isStart = true;
             props.setSelectStartNode(false);
+            props.setNodes(copyNodes);
         } else if(props.selectEndNode && !thisNode.isStart){
             for(const row of copyNodes){
                 for(const col of row){
@@ -45,60 +47,41 @@ const Node = (props) => {
             }
             thisNode.isEnd = true;
             props.setSelectEndNode(false);
+            props.setNodes(copyNodes);
         } else if (!props.selectStartNode && !props.selectEndNode) {
 			let node = e.target;
-			if (!node.classList.contains('start-node') && !node.classList.contains('end-node')) {
-                thisNode.isBlocked = true;
-				// props.setMouseDown(true);
+			if (!node.classList.contains('start-node') && !node.classList.contains('end-node') && !node.classList.contains('blocked')) {
+                // thisNode.isBlocked = true;
+                document.getElementById(`${row}-${column}`).classList.add('blocked')
+				props.setMouseDown(true);
 			}
         }
 
-        props.setNodes(copyNodes);
+        
 
 
-		// 	const nodeList = document.querySelectorAll('.node');
-		// 	for (const node of nodeList)
-		// 		if (node.classList.contains('start-node')) {
-		// 			node.classList.toggle('start-node');
-		// 		}
 
-		// 	node.classList.toggle('start-node');
-		// 	props.setSelectStartNode(false);
-		// } else if (props.selectEndNode) {
-		// 	let node = e.target;
-		// 	if (node.classList.contains('start-node')) {
-		// 		return;
-		// 	}
-
-		// 	const nodeList = document.querySelectorAll('.node');
-		// 	for (const node of nodeList)
-		// 		if (node.classList.contains('end-node')) {
-		// 			node.classList.toggle('end-node');
-		// 		}
-
-		// 	node.classList.toggle('end-node');
-		// 	props.setSelectEndNode(false);
-		// }
 	};
 
 	const handleDrag = (e) => {
-		if (props.mouseDown === true) {
-			// console.log('dragging')
-			let node = e.target;
-			if (
-				!node.classList.contains('toggler') &&
-				!node.classList.contains('start-node') &&
-				!node.classList.contains('end-node')
-			) {
-				node.classList.toggle('toggler');
-			}
+		if (props.mouseDown && !props.selectStartNode && !props.selectEndNode) {
+            const {row, column} = props;
+            let thisNode = props.nodes[row][column];
+            
+            if (!thisNode.isStart && !thisNode.isEnd && !thisNode.isBlocked) {
+                let copyNodes = [...props.nodes]
+                copyNodes[row][column].isBlocked = true
+                props.setNodes(copyNodes);
+                }
+
 		}
 	};
 	return (
 		<div
-			className={`node ${dynamicClassName}`}
+            className={`node ${dynamicClassName}`}
+            id={`${props.row}-${props.column}`}
 			onMouseDown={handleMouseDown}
-			// onMouseOver={handleDrag}
+			onMouseOver={handleDrag}
             ></div>
 	);
 };

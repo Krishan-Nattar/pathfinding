@@ -6,18 +6,50 @@ import './PathfindingVisualizer.css';
 const PathfindingVisualizer = (props) => {
 	const [nodes, setNodes] = useState([]);
 	const [selectStartNode, setSelectStartNode] = useState(false);
-	const [selectEndNode, setSelectEndNode] = useState(false);
+    const [selectEndNode, setSelectEndNode] = useState(false);
+    const [visitedNodes, setVisitedNodes] = useState();
+    const [finished, setFinished] = useState(false);
 	const rowCount = 20;
 	const columnCount = 25;
 
 	const [queue, setQueue] = useState();
-	const [finalPath, setFinalPath] = useState();
+    const [finalPath, setFinalPath] = useState();
+    let path = "";
+
+    useEffect(()=>{
+        if(visitedNodes){
+
+            let nodeCopy = [...visitedNodes];
+
+            let animation = setInterval(()=>{
+                if(nodeCopy.length === 0){
+                    clearInterval(animation);
+                    setFinished(true);
+                    return;
+                }
+                let nextNode = nodeCopy.shift();
+                let row = nextNode.row;
+                let column = nextNode.column;
+
+                const currentNode = document.getElementById(`${row}-${column}`);
+                currentNode.classList.toggle('visited');
+
+            }, 10)
+
+        }
+    }, [visitedNodes])
 
 	const handleBFS = () => {
 		let q = new Queue(queue.nodes);
-		let copyNodes = [...nodes];
-		if (!q.isEmpty()) {
-			let currentPath = q.dequeue();
+
+        let copyNodes = JSON.parse(JSON.stringify(nodes))
+
+        let finished = false;
+        let visitedArray = []
+		while (!q.isEmpty() && !finished) {
+            let currentPath = q.dequeue();
+            console.log(q);
+            console.log(currentPath)
 			let currentNode = currentPath[currentPath.length - 1];
 			let rowNumber = currentNode.row;
 			let colNumber = currentNode.column;
@@ -37,24 +69,27 @@ const PathfindingVisualizer = (props) => {
 			}
 
 			for (const node of checkNodes) {
-				if (!node.wasVisited && !node.isEnd && !node.isBlocked) {
+                let isBlocked = document.getElementById(`${node.row}-${node.column}`).classList.contains('blocked');
+				if (!node.wasVisited && !node.isEnd && !isBlocked && !node.isStart) {
+                    visitedArray.push({ row: node.row, column: node.column })
 					copyNodes[node.row][node.column].wasVisited = true;
 					q.enqueue([...currentPath, { row: node.row, column: node.column }]);
 					continue;
 				}
 				if (node.isEnd) {
-					setFinalPath(currentPath);
+                    setFinalPath(currentPath);
+                    setVisitedNodes(visitedArray);
+                    
 					return;
 				}
 			}
-			setNodes(copyNodes);
-			setTimeout(setQueue.bind(this, q), 5);
-		} else {
-			alert('Unable to find path');
-		}
-	};
+        } 
+        setVisitedNodes(visitedArray);
 
-	// Handle BFS
+    };
+    
+    
+
 	useEffect(() => {
 		if (queue) {
 			handleBFS();
@@ -62,24 +97,39 @@ const PathfindingVisualizer = (props) => {
 	}, [queue]);
 
 	useEffect(() => {
-		if (finalPath) {
-			let copyNodes = [...nodes];
-			if (finalPath.length > 0) {
-				let row = finalPath[0].row;
-				let column = finalPath[0].column;
-				copyNodes[row][column].visiting = true;
-			}
-			setNodes(copyNodes);
-			let newPath = [...finalPath];
-			newPath.shift();
-			if (newPath.length > 0) {
-				setTimeout(setFinalPath.bind(this, newPath), 0);
-			}
+		if (finalPath && finished) {
+
+            let nodeCopy = [...finalPath];
+            nodeCopy.shift()
+
+            let animation = setInterval(()=>{
+                if(nodeCopy.length === 0){
+                    clearInterval(animation);
+                    setFinished(true);
+                    return;
+                }
+                let nextNode = nodeCopy.shift();
+                let row = nextNode.row;
+                let column = nextNode.column;
+
+                const currentNode = document.getElementById(`${row}-${column}`);
+                currentNode.classList.toggle('visiting');
+                currentNode.classList.toggle('visited');
+
+
+            }, 100)
+
 		}
-	}, [finalPath]);
+	}, [finalPath, finished]);
 
 	const handleClearSelected = () => {
-		initializeNodes();
+        initializeNodes();
+        for (let row = 0; row < rowCount; row++) {
+			// const currentRow = [];
+			for (let column = 0; column < columnCount; column++) {
+                document.getElementById(`${row}-${column}`).className = "node";
+            }
+        }
 	};
 
 	const handleSelectStartingNode = (e) => {
