@@ -26,7 +26,6 @@ const Node = (props) => {
 
 	const handleMouseDown = (e) => {
         const {row, column} = props;
-        // let copyNodes = [...props.nodes]
         let copyNodes = JSON.parse(JSON.stringify(props.nodes))
         let thisNode = copyNodes[row][column];
 
@@ -81,7 +80,9 @@ const Node = (props) => {
             className={`node ${dynamicClassName}`}
             id={`${props.row}-${props.column}`}
 			onMouseDown={handleMouseDown}
-			onMouseOver={handleDrag}
+            onMouseOver={handleDrag}
+            // onMouseOverCapture={handleDrag}
+            // onMouseEnter={handleDrag}
             ></div>
 	);
 };

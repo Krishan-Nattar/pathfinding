@@ -123,9 +123,9 @@ const PathfindingVisualizer = (props) => {
 	}, [finalPath, finished]);
 
 	const handleClearSelected = () => {
+        setFinished(false);
         initializeNodes();
         for (let row = 0; row < rowCount; row++) {
-			// const currentRow = [];
 			for (let column = 0; column < columnCount; column++) {
                 document.getElementById(`${row}-${column}`).className = "node";
             }
@@ -191,7 +191,7 @@ const PathfindingVisualizer = (props) => {
 	return (
 		<div
 			className={`grid ${
-				selectStartNode || selectEndNode ? 'selecting-node' : null
+				selectStartNode || selectEndNode ? 'selecting-node' : " "
 			}`}>
 			{nodes.map((row, rowIndex) => {
 				return (
