@@ -1,8 +1,10 @@
 .row{
-    /* margin: 0; */
+    /* margin: -2px; */
+    /* padding: 0; */
+
     /* position: absolute; */
     /* display: inline-block; */
-    /* height: 10px; */
+    height: 25px;
 }
 
 .grid{
@@ -22,14 +24,70 @@
 }
 
 .visiting{
-    background-color: purple;
-    transition: 0.5s;
+    /* background-color: purple; */
+    /* transition: 0.5s; */
+    animation: wipe-finish 0.5s cubic-bezier(.9,.9,.9,.9) forwards;
 }
 
-.visited{
-    background-color: teal;
-    transition: 0.5s;
+
+/* @-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+} */
+.visited{
+
+/* background: radial-gradient(270deg, #d09036, #0f42c3); */
+    /* background: linear-gradient(270deg, #d09036, #0f42c3);
+background-size: 100% 100%;
+
+-webkit-animation: AnimationName 5s ease infinite;
+-moz-animation: AnimationName 5s ease infinite;
+animation: AnimationName 5s ease infinite; */
+animation: wipe 0.5s cubic-bezier(.9,.9,.9,.9) forwards;
+/* animation: wipe 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; */
+
+/* background: #04ACFF; */
+    /* background-color: teal; */
+    /* transition: 0.5s; */
+}
+@keyframes wipe {
+    0% {
+        background-color: #04ACFF;
+        
+      /* height: 0px; */
+      /* width: 0px; */
+    }
+    100% {
+        background-color: teal;
+        
+      /* height: 100%; */
+      /* width: 25px; */
+    }
+  }
+
+  @keyframes wipe-finish {
+    0% {
+        background-color: blueviolet;
+      /* height: 0px; */
+      /* width: 0px; */
+    }
+    100% {
+        background-color: purple;
+      /* height: 100%; */
+      /* width: 25px; */
+    }
+  }
 
 .blocked{
     background-color: aqua;
