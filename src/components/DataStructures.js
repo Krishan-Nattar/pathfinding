@@ -19,3 +19,21 @@ export class Queue {
         return this.nodes.length === 0;
     }
 }
+
+
+export class Stack {
+    constructor(nodes = [])
+    {
+        this.nodes = nodes
+    }
+
+    push(node){
+        this.nodes.push(node)
+    }
+    pop(){
+        return this.nodes.pop()
+    }
+    isEmpty(){
+        return this.nodes.length === 0;
+    }
+}
