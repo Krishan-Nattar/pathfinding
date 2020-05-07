@@ -96,8 +96,6 @@ const PathfindingVisualizer = (props) => {
 		let visitedArray = [];
 		while (!q.isEmpty() && !finished) {
 			let currentPath = q.dequeue();
-			console.log(q);
-			console.log(currentPath);
 			let currentNode = currentPath[currentPath.length - 1];
 			let rowNumber = currentNode.row;
 			let colNumber = currentNode.column;
@@ -196,7 +194,6 @@ const PathfindingVisualizer = (props) => {
 	};
 
 	const handleSelectChange = (e) => {
-		console.log(e.target.value);
 		setSelected(e.target.value);
 	};
 
@@ -304,9 +301,9 @@ const PathfindingVisualizer = (props) => {
 					</div>
 				);
 			})}
-			<button onClick={handleClearSelected}>Clear Selected</button>
-			<button onClick={handleSelectStartingNode}>Select Starting Node</button>
-			<button onClick={handleSelectEndingNode}>Select Ending Node</button>
+			<button onClick={handleClearSelected}>Clear Grid</button>
+			<button onClick={handleSelectStartingNode} className={`${selectStartNode ? "active-btn" : ""}`}>Place Starting Node</button>
+			<button onClick={handleSelectEndingNode} className={`${selectEndNode ? "active-btn" : ""}`}>Place Ending Node</button>
 			<button onClick={handleStartAlgorithm}>Begin</button>
 			<select onChange={handleSelectChange}>
 				<option>Breadth First Search</option>

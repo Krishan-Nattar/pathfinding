@@ -81,8 +81,6 @@ const Node = (props) => {
             id={`${props.row}-${props.column}`}
 			onMouseDown={handleMouseDown}
             onMouseOver={handleDrag}
-            // onMouseOverCapture={handleDrag}
-            // onMouseEnter={handleDrag}
             ></div>
 	);
 };
