@@ -34,7 +34,7 @@ const PathfindingVisualizer = (props) => {
 
 				const currentNode = document.getElementById(`${row}-${column}`);
 				currentNode.classList.toggle('visited');
-			}, 10);
+			}, 20);
 		}
 	}, [visitedNodes]);
 
