@@ -1,86 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './Node.css';
 
 const Node = (props) => {
 
-    const [dynamicClassName, setDynamicClassName] = useState("");
-    const {isStart, isEnd, visiting, wasVisited, isBlocked} = props;
-
-    useEffect(()=>{
-
-        if(isStart){
-            setDynamicClassName('start-node')
-        } else if(isEnd){
-            setDynamicClassName('end-node')
-        } else if(visiting){
-            setDynamicClassName('visiting')
-        } else if(wasVisited){
-            setDynamicClassName('visited')
-        } else if(isBlocked){
-            setDynamicClassName("blocked")
-        } else {
-            setDynamicClassName("")
-        } 
-
-    },[isStart, isEnd, visiting, wasVisited, isBlocked])
-
 	const handleMouseDown = (e) => {
-        const {row, column} = props;
-        let copyNodes = JSON.parse(JSON.stringify(props.nodes))
-        let thisNode = copyNodes[row][column];
+		const { row, column } = props;
+		let thisNode = document.getElementById(`${row}-${column}`);
 
-        if(props.selectStartNode && !thisNode.isEnd){
-            for(const row of copyNodes){
-                for(const col of row){
-                    col.isStart = false;
-                }
-            }
-            thisNode.isStart = true;
-            props.setSelectStartNode(false);
-            props.setNodes(copyNodes);
-        } else if(props.selectEndNode && !thisNode.isStart){
-            for(const row of copyNodes){
-                for(const col of row){
-                    col.isEnd = false;
-                }
-            }
-            thisNode.isEnd = true;
-            props.setSelectEndNode(false);
-            props.setNodes(copyNodes);
-        } else if (!props.selectStartNode && !props.selectEndNode) {
-			let node = e.target;
-			if (!node.classList.contains('start-node') && !node.classList.contains('end-node') && !node.classList.contains('blocked')) {
-                // thisNode.isBlocked = true;
-                document.getElementById(`${row}-${column}`).classList.add('blocked')
+		if (props.selectStartNode && !thisNode.classList.contains('end-node')) {
+			props.setSelectStartNode(false);
+			thisNode.classList.toggle('start-node');
+		} else if (
+			props.selectEndNode &&
+			!thisNode.classList.contains('start-node')
+		) {
+			props.setSelectEndNode(false);
+			thisNode.classList.toggle('end-node');
+		} else if (!props.selectStartNode && !props.selectEndNode) {
+			if (
+				!thisNode.classList.contains('start-node') &&
+				!thisNode.classList.contains('end-node') &&
+				!thisNode.classList.contains('blocked')
+			) {
 				props.setMouseDown(true);
+				thisNode.classList.toggle('blocked');
+			} else if (thisNode.classList.contains('blocked')) {
+				thisNode.classList.toggle('blocked');
 			}
-        }
-
-        
-
-
-
-	};
-
-	const handleDrag = (e) => {
-		if (props.mouseDown && !props.selectStartNode && !props.selectEndNode) {
-            const {row, column} = props;
-            let thisNode = props.nodes[row][column];
-            
-            if (!thisNode.isStart && !thisNode.isEnd && !thisNode.isBlocked) {
-                let copyNodes = [...props.nodes]
-                copyNodes[row][column].isBlocked = true
-                props.setNodes(copyNodes);
-                }
-
 		}
 	};
+
+	const handleDrag = () => {
+		console.log('here');
+		if (props.mouseDown && !props.selectStartNode && !props.selectEndNode) {
+			const { row, column } = props;
+			let thisNode = document.getElementById(`${row}-${column}`);
+
+			if (
+				!thisNode.classList.contains('start-node') &&
+				!thisNode.classList.contains('end-node') &&
+				!thisNode.classList.contains('blocked')
+			) {
+				thisNode.classList.toggle('blocked');
+			}
+		}
+	};
+
+	const handleClick = () => {};
 	return (
 		<div
-            className={`node ${dynamicClassName}`}
-            id={`${props.row}-${props.column}`}
+			className={`node`}
+			id={`${props.row}-${props.column}`}
 			onMouseDown={handleMouseDown}
-            onMouseOver={handleDrag}
+			onMouseOver={handleDrag}
+			onClick={handleClick}
             ></div>
 	);
 };

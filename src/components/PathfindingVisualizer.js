@@ -27,7 +27,6 @@ const PathfindingVisualizer = (props) => {
 				if (nodeCopy.length === 0) {
 					clearInterval(animation);
 					setFinished(true);
-
 					return;
 				}
 				let nextNode = nodeCopy.shift();
@@ -69,16 +68,14 @@ const PathfindingVisualizer = (props) => {
 			}
 
 			for (const node of checkNodes) {
-				let isBlocked = document
-					.getElementById(`${node.row}-${node.column}`)
-					.classList.contains('blocked');
-				if (!node.wasVisited && !node.isEnd && !isBlocked && !node.isStart) {
+				let thisNode = document.getElementById(`${node.row}-${node.column}`);
+				if (!node.wasVisited && !thisNode.classList.contains('end-node') && !thisNode.classList.contains('blocked') && !thisNode.classList.contains('start-node')) {
 					visitedArray.push({ row: node.row, column: node.column });
 					copyNodes[node.row][node.column].wasVisited = true;
 					q.push([...currentPath, { row: node.row, column: node.column }]);
 					continue;
 				}
-				if (node.isEnd) {
+				if (thisNode.classList.contains('end-node')) {
 					setFinalPath(currentPath);
 					setVisitedNodes(visitedArray);
 
@@ -117,22 +114,22 @@ const PathfindingVisualizer = (props) => {
 			}
 
 			for (const node of checkNodes) {
-				let isBlocked = document
-					.getElementById(`${node.row}-${node.column}`)
-					.classList.contains('blocked');
-				if (!node.wasVisited && !node.isEnd && !isBlocked && !node.isStart) {
+				let thisNode = document.getElementById(`${node.row}-${node.column}`);
+					
+				if (!node.wasVisited && !thisNode.classList.contains('end-node') && !thisNode.classList.contains('blocked') && !thisNode.classList.contains('start-node')) {
 					visitedArray.push({ row: node.row, column: node.column });
 					copyNodes[node.row][node.column].wasVisited = true;
 					q.enqueue([...currentPath, { row: node.row, column: node.column }]);
 					continue;
 				}
-				if (node.isEnd) {
+				if (thisNode.classList.contains('end-node')) {
 					setFinalPath(currentPath);
 					setVisitedNodes(visitedArray);
 
 					return;
 				}
 			}
+
 		}
 		setVisitedNodes(visitedArray);
 	};
@@ -158,10 +155,6 @@ const PathfindingVisualizer = (props) => {
 				if (nodeCopy.length === 0) {
 					clearInterval(animation);
 					setFinished(false);
-					// setQueue();
-					// setStack();
-					// setFinalPath();
-					// setVisitedNodes();
 					return;
 				}
 				let nextNode = nodeCopy.shift();
@@ -176,6 +169,8 @@ const PathfindingVisualizer = (props) => {
 	}, [finalPath, finished]);
 
 	const handleClearSelected = () => {
+		setSelectEndNode(false);
+		setSelectStartNode(false);
 		setFinished(false);
 		initializeNodes();
 		for (let row = 0; row < rowCount; row++) {
@@ -196,11 +191,12 @@ const PathfindingVisualizer = (props) => {
 	};
 
 	const handleSelectChange = (e) => {
-		console.log(e.target.textContent);
 		setSelected(e.target.textContent);
 	};
 
 	const handleStartAlgorithm = () => {
+		setSelectStartNode(false);
+		setSelectEndNode(false);
 		let visitedNodes = document.querySelectorAll('.visited');
 		let pathNodes = document.querySelectorAll('.visiting');
 
@@ -212,11 +208,12 @@ const PathfindingVisualizer = (props) => {
 		}
 		let beginningNode;
 
-		outerloop: for (const row of nodes) {
-			for (const node of row) {
-				if (node.isStart) {
-					beginningNode = node;
-					break outerloop;
+		thisloop:
+		for (let row = 0; row < rowCount; row++) {
+			for (let column = 0; column < columnCount; column++) {
+				if(document.getElementById(`${row}-${column}`).classList.contains('start-node')){
+					beginningNode = nodes[row][column]
+					break thisloop;
 				}
 			}
 		}
@@ -255,11 +252,8 @@ const PathfindingVisualizer = (props) => {
 				currentRow.push({
 					row,
 					column,
-					isStart: false,
-					isEnd: false,
 					visiting: false,
 					wasVisited: false,
-					isBlocked: false,
 				});
 			}
 			nodes.push(currentRow);
@@ -347,13 +341,9 @@ const PathfindingVisualizer = (props) => {
 				<Icon className="arrow right" color="purple" />
 				<Icon className="arrow right"  color="purple" />
 				<Icon className="arrow right"  color="purple" />
-					{/* <p>Starting Node</p> */}
-				{/* </div> */}
-				{/* <div> */}
+
 				<Popup content='This is the final destination the algorithm is looking for.' trigger={<div className="node legend-end"></div>} />
-					
-					{/* <p>Ending Node</p> */}
-				{/* </div> */}
+
 
 			  </div>
               <p>
@@ -404,13 +394,13 @@ const PathfindingVisualizer = (props) => {
 			<Button
 				color="orange"
 				onClick={handleSelectStartingNode}
-				className={`${selectStartNode ? 'active' : ''}`}>
+				className={`${selectStartNode ? 'disabled' : ''}`}>
 				Place Starting Node
 			</Button>
 			<Button
 				color="violet"
 				onClick={handleSelectEndingNode}
-				className={`${selectEndNode ? 'active' : ''}`}>
+				className={`${selectEndNode ? 'disabled' : ''}`}>
 				Place Ending Node
 			</Button>
 			<Button color="green" onClick={handleStartAlgorithm}>
@@ -422,7 +412,6 @@ const PathfindingVisualizer = (props) => {
 				defaultValue="Breadth First Search"
 				onChange={handleSelectChange}
 			/>
-			{/* <br /> */}
 			
 			<div
 				className={`grid ${
