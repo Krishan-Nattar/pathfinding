@@ -11,13 +11,13 @@ const PathfindingVisualizer = (props) => {
 	const [selectEndNode, setSelectEndNode] = useState(false);
 	const [visitedNodes, setVisitedNodes] = useState();
 	const [finished, setFinished] = useState(false);
-	const rowCount = 20;
-	const columnCount = 25;
-
 	const [queue, setQueue] = useState();
 	const [stack, setStack] = useState();
 	const [finalPath, setFinalPath] = useState();
 	const [selected, setSelected] = useState('Breadth First Search');
+	
+	const rowCount = 20;
+	const columnCount = 25;
 
 	useEffect(() => {
 		if (visitedNodes) {
@@ -35,7 +35,7 @@ const PathfindingVisualizer = (props) => {
 
 				const currentNode = document.getElementById(`${row}-${column}`);
 				currentNode.classList.toggle('visited');
-			}, 20);
+			}, 3);
 		}
 	}, [visitedNodes]);
 
@@ -168,6 +168,20 @@ const PathfindingVisualizer = (props) => {
 		}
 	}, [finalPath, finished]);
 
+	const removeNode = (title) =>{
+		
+		for (let row = 0; row < rowCount; row++) {
+			for (let column = 0; column < columnCount; column++) {
+
+				let thisNode = document.getElementById(`${row}-${column}`);
+
+				if(thisNode.classList.contains(`${title}-node`)){
+					thisNode.classList.toggle(`${title}-node`)
+				}
+				
+			}
+		}
+	}
 	const handleClearSelected = () => {
 		setSelectEndNode(false);
 		setSelectStartNode(false);
@@ -423,6 +437,7 @@ const PathfindingVisualizer = (props) => {
 							{row.map((node, nodeIndex) => {
 								return (
 									<Node
+										removeNode={removeNode}
 										key={nodeIndex}
 										mouseDown={props.mouseDown}
 										setMouseDown={props.setMouseDown}
@@ -432,13 +447,8 @@ const PathfindingVisualizer = (props) => {
 										selectEndNode={selectEndNode}
 										row={node.row}
 										column={node.column}
-										isStart={node.isStart}
-										isEnd={node.isEnd}
 										nodes={nodes}
 										setNodes={setNodes}
-										visiting={node.visiting}
-										wasVisited={node.wasVisited}
-										isBlocked={node.isBlocked}
 									/>
 								);
 							})}

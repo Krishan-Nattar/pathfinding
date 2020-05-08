@@ -8,13 +8,15 @@ const Node = (props) => {
 		let thisNode = document.getElementById(`${row}-${column}`);
 
 		if (props.selectStartNode && !thisNode.classList.contains('end-node')) {
-			props.setSelectStartNode(false);
+            props.setSelectStartNode(false);
+            props.removeNode('start');
 			thisNode.classList.toggle('start-node');
 		} else if (
 			props.selectEndNode &&
 			!thisNode.classList.contains('start-node')
 		) {
-			props.setSelectEndNode(false);
+            props.setSelectEndNode(false);
+            props.removeNode('end');
 			thisNode.classList.toggle('end-node');
 		} else if (!props.selectStartNode && !props.selectEndNode) {
 			if (
