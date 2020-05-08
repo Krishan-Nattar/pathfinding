@@ -3,6 +3,9 @@ import './Node.css';
 
 const Node = (props) => {
 
+    
+
+    // WHen mouse is clicked, we check we nodes currently exist on that spot and put relevant new node there if applicable.
 	const handleMouseDown = (e) => {
 		const { row, column } = props;
 		let thisNode = document.getElementById(`${row}-${column}`);
@@ -32,8 +35,8 @@ const Node = (props) => {
 		}
 	};
 
+    // If a user had clicked on a blank node and dragged the mouse across other blank nodes, this will create "blocked" nodes on the grid
 	const handleDrag = () => {
-		console.log('here');
 		if (props.mouseDown && !props.selectStartNode && !props.selectEndNode) {
 			const { row, column } = props;
 			let thisNode = document.getElementById(`${row}-${column}`);
@@ -48,14 +51,12 @@ const Node = (props) => {
 		}
 	};
 
-	const handleClick = () => {};
 	return (
 		<div
 			className={`node`}
 			id={`${props.row}-${props.column}`}
 			onMouseDown={handleMouseDown}
 			onMouseOver={handleDrag}
-			onClick={handleClick}
             ></div>
 	);
 };

@@ -35,7 +35,7 @@ const PathfindingVisualizer = (props) => {
 
 				const currentNode = document.getElementById(`${row}-${column}`);
 				currentNode.classList.toggle('visited');
-			}, 3);
+			}, 16);
 		}
 	}, [visitedNodes]);
 
@@ -136,12 +136,14 @@ const PathfindingVisualizer = (props) => {
 
 	useEffect(() => {
 		if (queue) {
+			setFinalPath()
 			handleBFS();
 		}
 	}, [queue]);
 
 	useEffect(() => {
 		if (stack) {
+			setFinalPath()
 			handleDFS();
 		}
 	}, [stack]);

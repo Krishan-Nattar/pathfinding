@@ -15,11 +15,11 @@
 }
 
 .start-node {
-    animation: wipe-start 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards;
+    animation: wipe-start 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards !important;
 }
 
 .end-node {
-    animation: wipe-end 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards;
+    animation: wipe-end 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards !important;
 }
 
 .visiting {
