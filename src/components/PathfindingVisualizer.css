@@ -35,9 +35,15 @@
 	}
 	10% {
 		background-color: #04acff;
+		
+	}
+	30%{
+		transform: scale(1.1);
 	}
 	100% {
 		background-color: teal;
+		transform: scale(1);
+		
 	}
 }
 
@@ -45,8 +51,12 @@
 	0% {
 		background-color: blueviolet;
 	}
+	30%{
+		transform: scale(1.1);
+	}
 	100% {
 		background-color: purple;
+		transform: scale(1);
 	}
 }
 
@@ -54,7 +64,11 @@
 	0% {
 		background-color: white;
 	}
+	30%{
+		transform: scale(1.1);
+	}
 	100% {
+		transform: scale(1);
 		background-color: rgb(122, 168, 43);
 	}
 }
@@ -63,7 +77,11 @@
 	0% {
 		background-color: white;
 	}
+	30%{
+		transform: scale(1.1);
+	}
 	100% {
+		transform: scale(1);
 		background-color: lightsalmon;
 	}
 }
@@ -71,7 +89,11 @@
 	0% {
 		background-color: white;
 	}
+	30%{
+		transform: scale(1.1)
+	}
 	100% {
+		transform: scale(1);
 		background-color: violet;
 	}
 }
