@@ -1,16 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
-import {
-	Button,
-	Popup,
-	Image,
-	Modal,
-	Header,
-	Icon,
-} from 'semantic-ui-react';
+import { Button, Popup, Image, Modal, Header, Icon } from 'semantic-ui-react';
 
 const Modals = () => {
-    const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(true);
 	const [open2, setOpen2] = useState(false);
 
 	const close = () => {
@@ -21,11 +14,11 @@ const Modals = () => {
 	const nextModal = () => {
 		setOpen(false);
 		setOpen2(true);
-    };
-    
-    return ( 
-        <>
-    <Modal dimmer={false} open={open} onClose={close}>
+	};
+
+	return (
+		<>
+			<Modal dimmer={false} open={open} onClose={close}>
 				<Modal.Header>Welcome!</Modal.Header>
 				<Modal.Content image>
 					{/* <Image
@@ -106,9 +99,8 @@ const Modals = () => {
 					/>
 				</Modal.Actions>
 			</Modal>
+		</>
+	);
+};
 
-        </>
-     );
-}
- 
 export default Modals;

@@ -2,24 +2,21 @@ import React from 'react';
 import './Node.css';
 
 const Node = (props) => {
-
-    
-
-    // WHen mouse is clicked, we check we nodes currently exist on that spot and put relevant new node there if applicable.
+	// WHen mouse is clicked, we check we nodes currently exist on that spot and put relevant new node there if applicable.
 	const handleMouseDown = (e) => {
 		const { row, column } = props;
 		let thisNode = document.getElementById(`${row}-${column}`);
 
 		if (props.selectStartNode && !thisNode.classList.contains('end-node')) {
-            props.setSelectStartNode(false);
-            props.removeNode('start');
+			props.setSelectStartNode(false);
+			props.removeNode('start');
 			thisNode.classList.toggle('start-node');
 		} else if (
 			props.selectEndNode &&
 			!thisNode.classList.contains('start-node')
 		) {
-            props.setSelectEndNode(false);
-            props.removeNode('end');
+			props.setSelectEndNode(false);
+			props.removeNode('end');
 			thisNode.classList.toggle('end-node');
 		} else if (!props.selectStartNode && !props.selectEndNode) {
 			if (
@@ -35,7 +32,7 @@ const Node = (props) => {
 		}
 	};
 
-    // If a user had clicked on a blank node and dragged the mouse across other blank nodes, this will create "blocked" nodes on the grid
+	// If a user had clicked on a blank node and dragged the mouse across other blank nodes, this will create "blocked" nodes on the grid
 	const handleDrag = () => {
 		if (props.mouseDown && !props.selectStartNode && !props.selectEndNode) {
 			const { row, column } = props;
@@ -56,8 +53,7 @@ const Node = (props) => {
 			className={`node`}
 			id={`${props.row}-${props.column}`}
 			onMouseDown={handleMouseDown}
-			onMouseOver={handleDrag}
-            ></div>
+			onMouseOver={handleDrag}></div>
 	);
 };
 

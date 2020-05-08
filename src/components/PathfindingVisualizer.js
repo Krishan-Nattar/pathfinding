@@ -299,7 +299,6 @@ const PathfindingVisualizer = (props) => {
 		initializeNodes();
 	}, []);
 
-
 	return (
 		<>
 			<Modals />
@@ -313,37 +312,36 @@ const PathfindingVisualizer = (props) => {
 				handleStartAlgorithm={handleStartAlgorithm}
 				handleSelectEndingNode={handleSelectEndingNode}
 			/>
-			
 
-				<div
-					className={`grid ${
-						selectStartNode || selectEndNode ? 'selecting-node' : ' '
-					}`}>
-					{nodes.map((row, rowIndex) => {
-						return (
-							<div key={rowIndex} className="row">
-								{row.map((node, nodeIndex) => {
-									return (
-										<Node
-											removeNode={removeNode}
-											key={nodeIndex}
-											mouseDown={props.mouseDown}
-											setMouseDown={props.setMouseDown}
-											selectStartNode={selectStartNode}
-											setSelectStartNode={setSelectStartNode}
-											setSelectEndNode={setSelectEndNode}
-											selectEndNode={selectEndNode}
-											row={node.row}
-											column={node.column}
-											nodes={nodes}
-											setNodes={setNodes}
-										/>
-									);
-								})}
-							</div>
-						);
-					})}
-				</div>
+			<div
+				className={`grid ${
+					selectStartNode || selectEndNode ? 'selecting-node' : ' '
+				}`}>
+				{nodes.map((row, rowIndex) => {
+					return (
+						<div key={rowIndex} className="row">
+							{row.map((node, nodeIndex) => {
+								return (
+									<Node
+										removeNode={removeNode}
+										key={nodeIndex}
+										mouseDown={props.mouseDown}
+										setMouseDown={props.setMouseDown}
+										selectStartNode={selectStartNode}
+										setSelectStartNode={setSelectStartNode}
+										setSelectEndNode={setSelectEndNode}
+										selectEndNode={selectEndNode}
+										row={node.row}
+										column={node.column}
+										nodes={nodes}
+										setNodes={setNodes}
+									/>
+								);
+							})}
+						</div>
+					);
+				})}
+			</div>
 			{/* </div> */}
 		</>
 	);
