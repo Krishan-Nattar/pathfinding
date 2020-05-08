@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Node from './Node/Node';
 import { Queue, Stack } from './DataStructures';
-import {
-	Button,
-	Select,
-	Segment,
-	Popup,
-	Image,
-	Modal,
-	Header,
-	Icon,
-} from 'semantic-ui-react';
+import Modals from './Modals';
+import Legend from './Legend';
+import Controls from './Controls';
 
 import './PathfindingVisualizer.css';
 
@@ -306,167 +299,21 @@ const PathfindingVisualizer = (props) => {
 		initializeNodes();
 	}, []);
 
-	// Search options for dropdown menu
-	const options = [
-		{ key: 'bfs', text: 'Breadth First Search', value: 'Breadth First Search' },
-		{ key: 'dfs', text: 'Depth First Search', value: 'Depth First Search' },
-	];
 
-	const [open, setOpen] = useState(true);
-	const [open2, setOpen2] = useState(false);
-	const [dimmer, setDimmer] = useState(false);
-
-	const close = () => {
-		setOpen(false);
-		setOpen2(false);
-	};
-
-	const nextModal = () => {
-		setOpen(false);
-		setOpen2(true);
-	};
 	return (
 		<>
-			<Modal dimmer={dimmer} open={open} onClose={close}>
-				<Modal.Header>Welcome!</Modal.Header>
-				<Modal.Content image>
-					{/* <Image
-              wrapped
-              size='medium'
-              src='/images/avatar/large/rachel.png'
-            /> */}
-					<Modal.Description>
-						<Header>Welcome to my path visualization app!</Header>
-						<p>
-							If you want to jump right in, just click skip, otherwise click
-							next for a walkthrough of how this works!
-						</p>
-						{/* <p>Is it okay to use this photo?</p> */}
-					</Modal.Description>
-				</Modal.Content>
-				<Modal.Actions>
-					<Button color="black" onClick={close}>
-						Skip
-					</Button>
-					<Button
-						positive
-						icon="angle right"
-						labelPosition="right"
-						content="Next"
-						onClick={nextModal}
-					/>
-				</Modal.Actions>
-			</Modal>
-
-			<Modal dimmer={dimmer} open={open2} onClose={close}>
-				<Modal.Header>What does this do?</Modal.Header>
-				<Modal.Content image>
-					{/* <Image
-              wrapped
-              size='medium'
-              src='/images/avatar/large/rachel.png'
-            /> */}
-					<Modal.Description>
-						<Header>Here is an explanation</Header>
-						<div className="node-arrows">
-							{/* <div> */}
-							<Popup
-								content="The search algorithm will start from this node."
-								trigger={<div className="node legend-start"></div>}
-							/>
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-							<Icon className="arrow right" color="purple" />
-
-							<Popup
-								content="This is the final destination the algorithm is looking for."
-								trigger={<div className="node legend-end"></div>}
-							/>
-						</div>
-						<p>
-							After you place a starting node and an ending node you get to
-							visualize how a search algorithm finds its way between them!
-						</p>
-					</Modal.Description>
-				</Modal.Content>
-				<Modal.Actions>
-					<Button color="black" onClick={close}>
-						Skip
-					</Button>
-					<Button
-						positive
-						icon="angle right"
-						labelPosition="right"
-						content="Next"
-						onClick={close}
-					/>
-				</Modal.Actions>
-			</Modal>
-			<Segment className="legend">
-				<div>
-					<Popup
-						content="The search algorithm will start from this node."
-						trigger={<div className="node legend-start"></div>}
-					/>
-
-					<p>Starting Node</p>
-				</div>
-				<div>
-					<Popup
-						content="This is the final destination the algorithm is looking for."
-						trigger={<div className="node legend-end"></div>}
-					/>
-
-					<p>Ending Node</p>
-				</div>
-				<div>
-					<Popup
-						content="Click anywhere to place walls and see what happens!"
-						trigger={<div className="node legend-block"></div>}
-					/>
-
-					<p>Walls</p>
-				</div>
-				<div>
-					<Popup
-						content="This is the final path discovered by the algorithm you chose."
-						trigger={<div className="node legend-path"></div>}
-					/>
-
-					<p>Final Path</p>
-				</div>
-			</Segment>
-			<div className="container">
-				<Button color="red" onClick={handleClearSelected}>
-					Clear Grid
-				</Button>
-				<Button
-					color="orange"
-					onClick={handleSelectStartingNode}
-					className={`${selectStartNode ? 'disabled' : ''}`}>
-					Place Starting Node
-				</Button>
-				<Button
-					color="violet"
-					onClick={handleSelectEndingNode}
-					className={`${selectEndNode ? 'disabled' : ''}`}>
-					Place Ending Node
-				</Button>
-				<Button color="green" onClick={handleStartAlgorithm}>
-					Begin
-				</Button>
-				<Select
-					compact
-					options={options}
-					defaultValue="Breadth First Search"
-					onChange={handleSelectChange}
-				/>
+			<Modals />
+			<Legend />
+			<Controls
+				handleClearSelected={handleClearSelected}
+				handleSelectStartingNode={handleSelectStartingNode}
+				selectStartNode={selectStartNode}
+				selectEndNode={selectEndNode}
+				handleSelectChange={handleSelectChange}
+				handleStartAlgorithm={handleStartAlgorithm}
+				handleSelectEndingNode={handleSelectEndingNode}
+			/>
+			
 
 				<div
 					className={`grid ${
@@ -497,7 +344,7 @@ const PathfindingVisualizer = (props) => {
 						);
 					})}
 				</div>
-			</div>
+			{/* </div> */}
 		</>
 	);
 };
