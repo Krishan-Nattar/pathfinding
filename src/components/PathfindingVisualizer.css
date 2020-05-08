@@ -32,18 +32,19 @@
 @keyframes wipe {
 	0% {
 		background-color: white;
+		border-radius: 50%;
+		outline: none;
 	}
 	10% {
 		background-color: #04acff;
-		
 	}
-	30%{
-		transform: scale(1.1);
+	30% {
+		transform: scale(0.7);
 	}
+
 	100% {
 		background-color: teal;
 		transform: scale(1);
-		
 	}
 }
 
@@ -51,7 +52,7 @@
 	0% {
 		background-color: blueviolet;
 	}
-	30%{
+	30% {
 		transform: scale(1.1);
 	}
 	100% {
@@ -64,7 +65,7 @@
 	0% {
 		background-color: white;
 	}
-	30%{
+	30% {
 		transform: scale(1.1);
 	}
 	100% {
@@ -77,7 +78,7 @@
 	0% {
 		background-color: white;
 	}
-	30%{
+	30% {
 		transform: scale(1.1);
 	}
 	100% {
@@ -89,8 +90,8 @@
 	0% {
 		background-color: white;
 	}
-	30%{
-		transform: scale(1.1)
+	30% {
+		transform: scale(1.1);
 	}
 	100% {
 		transform: scale(1);
