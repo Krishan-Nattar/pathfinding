@@ -22,8 +22,15 @@ const PathfindingVisualizer = (props) => {
 	const rowCount = 20;
 	const columnCount = 25;
 
+	// Prevent mouse clicks while visualizations are occuring
+	const stopClicking = () =>{
+		document.querySelector('.App').classList.toggle('no-clicks');
+
+	}
 	useEffect(() => {
 		if (visitedNodes) {
+			let ms = 16;
+			let timing = visitedNodes.length * ms + 100;
 			let nodeCopy = [...visitedNodes];
 
 			let animation = setInterval(() => {
@@ -38,8 +45,10 @@ const PathfindingVisualizer = (props) => {
 
 				const currentNode = document.getElementById(`${row}-${column}`);
 				currentNode.classList.toggle('visited');
-			}, 16);
+			}, ms);
+			if(!finished){setTimeout(stopClicking, timing);}
 		}
+
 	}, [visitedNodes]);
 
 	// Creates an array of nodes located around the current node.
@@ -160,6 +169,9 @@ const PathfindingVisualizer = (props) => {
 
 	useEffect(() => {
 		if (finalPath && finished) {
+			stopClicking()
+			let ms = 100;
+			let timing = ms * finalPath.length
 			let nodeCopy = [...finalPath];
 			nodeCopy.shift();
 
@@ -176,7 +188,8 @@ const PathfindingVisualizer = (props) => {
 				const currentNode = document.getElementById(`${row}-${column}`);
 				currentNode.classList.toggle('visiting');
 				currentNode.classList.toggle('visited');
-			}, 100);
+			}, ms);
+			setTimeout(stopClicking, timing);
 		}
 	}, [finalPath, finished]);
 
@@ -223,8 +236,15 @@ const PathfindingVisualizer = (props) => {
 		setSelected(e.target.textContent);
 	};
 
+	const stopClicks = e =>{
+		e.stopPropagation();
+		e.preventDefault();
+		console.log("STOPCLICKS")
+	}
+
 	// Handles click the "Begin" button
 	const handleStartAlgorithm = () => {
+		
 		setSelectStartNode(false);
 		setSelectEndNode(false);
 		let visitedNodes = document.querySelectorAll('.visited');
@@ -253,7 +273,7 @@ const PathfindingVisualizer = (props) => {
 		if (!beginningNode) {
 			return;
 		}
-
+		stopClicking()
 		if (selected === 'Breadth First Search') {
 			let q = new Queue();
 			q.enqueue([
@@ -342,7 +362,6 @@ const PathfindingVisualizer = (props) => {
 					);
 				})}
 			</div>
-			{/* </div> */}
 		</>
 	);
 };
