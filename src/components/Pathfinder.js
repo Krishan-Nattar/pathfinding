@@ -5,18 +5,18 @@ import Modals from './Modals';
 import Legend from './Legend';
 import Controls from './Controls';
 
-import './PathfindingVisualizer.css';
+import './Pathfinder.css';
 
-const PathfindingVisualizer = (props) => {
+const Pathfinder = (props) => {
 	const [nodes, setNodes] = useState([]);
 	const [selectStartNode, setSelectStartNode] = useState(false);
 	const [selectEndNode, setSelectEndNode] = useState(false);
+	const [selected, setSelected] = useState('Breadth First Search');
 	const [visitedNodes, setVisitedNodes] = useState();
-	const [finished, setFinished] = useState(false);
 	const [queue, setQueue] = useState();
 	const [stack, setStack] = useState();
+	const [finished, setFinished] = useState(false);
 	const [finalPath, setFinalPath] = useState();
-	const [selected, setSelected] = useState('Breadth First Search');
 
 	// The grid's row and column count
 	const rowCount = 20;
@@ -44,9 +44,10 @@ const PathfindingVisualizer = (props) => {
 				let column = nextNode.column;
 
 				const currentNode = document.getElementById(`${row}-${column}`);
+				console.log(currentNode, row, column);
 				currentNode.classList.toggle('visited');
 			}, ms);
-			if(!finished){setTimeout(stopClicking, timing);}
+			// if(!finished){setTimeout(stopClicking, timing);}
 		}
 
 	}, [visitedNodes]);
@@ -169,7 +170,10 @@ const PathfindingVisualizer = (props) => {
 
 	useEffect(() => {
 		if (finalPath && finished) {
-			stopClicking()
+			// if(!document.querySelector('App').classList.contains('no-clicks')){
+
+			// 	stopClicking()
+			// }
 			let ms = 100;
 			let timing = ms * finalPath.length
 			let nodeCopy = [...finalPath];
@@ -189,7 +193,7 @@ const PathfindingVisualizer = (props) => {
 				currentNode.classList.toggle('visiting');
 				currentNode.classList.toggle('visited');
 			}, ms);
-			setTimeout(stopClicking, timing);
+			// setTimeout(stopClicking, timing);
 		}
 	}, [finalPath, finished]);
 
@@ -236,12 +240,6 @@ const PathfindingVisualizer = (props) => {
 		setSelected(e.target.textContent);
 	};
 
-	const stopClicks = e =>{
-		e.stopPropagation();
-		e.preventDefault();
-		console.log("STOPCLICKS")
-	}
-
 	// Handles click the "Begin" button
 	const handleStartAlgorithm = () => {
 		
@@ -273,7 +271,7 @@ const PathfindingVisualizer = (props) => {
 		if (!beginningNode) {
 			return;
 		}
-		stopClicking()
+		// stopClicking()
 		if (selected === 'Breadth First Search') {
 			let q = new Queue();
 			q.enqueue([
@@ -366,4 +364,4 @@ const PathfindingVisualizer = (props) => {
 	);
 };
 
-export default PathfindingVisualizer;
+export default Pathfinder;

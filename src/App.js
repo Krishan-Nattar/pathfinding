@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import PathfindingVisualizer from './components/PathfindingVisualizer';
+import Pathfinder from './components/Pathfinder';
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="App" onMouseUp={handleMouseUp}>
-      <PathfindingVisualizer mouseDown={mouseDown} setMouseDown={setMouseDown}/>
+      <Pathfinder mouseDown={mouseDown} setMouseDown={setMouseDown}/>
     </div>
   );
 }
