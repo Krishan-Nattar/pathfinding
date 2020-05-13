@@ -29,13 +29,15 @@ const Controls = (props) => {
 				Clear Grid
 			</Button>
 			<Button
-				color="orange"
+				// color="lightsalmon"
+				style={{backgroundColor:'lightsalmon', color:'white'}}
 				onClick={props.handleSelectStartingNode}
 				className={`${props.selectStartNode ? 'disabled' : ''}`}>
 				Place Starting Node
 			</Button>
 			<Button
-				color="violet"
+			style={{backgroundColor: 'violet', color:'white'}}
+				// color="violet"
 				onClick={props.handleSelectEndingNode}
 				className={`${props.selectEndNode ? 'disabled' : ''}`}>
 				Place Ending Node
