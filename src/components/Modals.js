@@ -110,7 +110,9 @@ const Modals = () => {
 			<Modal dimmer={true} open={open3} onClose={close}>
 				<Modal.Header>Placing Walls</Modal.Header>
 				<Modal.Content image>
-					<Image wrapped size="medium" src="/modal2.PNG" />
+					<Image wrapped 
+					// size="large" 
+					src="/modal2.PNG" />
 					<Modal.Description>
 						<br />
 						<div className="node-arrows">
