@@ -18,10 +18,12 @@ const Modals = () => {
 	const nextModal = () => {
 		setOpen(false);
 		setOpen2(true);
+		setOpen3(false);
 	};
 	const nextModal2 = () => {
 		setOpen2(false);
 		setOpen3(true);
+		setOpen4(false);
 	};
 
 	const nextModal3 = () => {
@@ -165,6 +167,13 @@ const Modals = () => {
 					</Modal.Description>
 				</Modal.Content>
 				<Modal.Actions>
+				<Button
+						color="orange"
+						icon="angle left"
+						labelPosition="left"
+						content="Back"
+						onClick={nextModal}
+					/>
 					<Button color="black" onClick={close}>
 						Skip
 					</Button>
@@ -190,6 +199,13 @@ const Modals = () => {
 					</Modal.Description>
 				</Modal.Content>
 				<Modal.Actions>
+				<Button
+						color="orange"
+						icon="angle left"
+						labelPosition="left"
+						content="Back"
+						onClick={nextModal2}
+					/>
 					<Button color="green" onClick={close}>
 						Let's Go!
 					</Button>
