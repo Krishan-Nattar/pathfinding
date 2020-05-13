@@ -40,7 +40,7 @@ const Controls = (props) => {
 				className={`${props.selectEndNode ? 'disabled' : ''}`}>
 				Place Ending Node
 			</Button>
-			<Button color="green" onClick={props.handleStartAlgorithm}>
+			<Button color="blue" onClick={props.handleStartAlgorithm}>
 				Begin
 			</Button>
 			<Select

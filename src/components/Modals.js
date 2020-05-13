@@ -37,9 +37,9 @@ const Modals = () => {
 					<Modal.Description>
 						<Header>Welcome to my path visualization app!</Header>
 						<p>
-							If you want to jump right in, just click <strong>skip</strong>;
+							If you want to jump right in, just click <strong>Skip</strong>;
 							otherwise click
-							<strong style={{ color: 'green' }}> next</strong> for a walkthrough
+							<strong style={{ color: 'green' }}> Next</strong> for a walkthrough
 							of how this works!
 						</p>
 					</Modal.Description>
@@ -87,7 +87,7 @@ const Modals = () => {
 						</div>
 						<br />
 						<p>
-							After you place a <strong style={{color: 'lightsalmon'}}>starting node</strong> and an <strong style={{color: 'violet'}}>ending node</strong> you get to see
+							After you place a <strong style={{color: 'lightsalmon'}}>Starting Node</strong> and an <strong style={{color: 'violet'}}>Ending Node</strong> you get to see
 							a visualization of how a search algorithm finds its way between
 							them!
 						</p>
@@ -155,7 +155,7 @@ const Modals = () => {
 						</div>
 						<br />
 						<p>
-							Click/drag to add <strong style={{color: 'rgb(122, 168, 43)'}}>walls</strong> and watch how the algorithm navigates
+							Click/drag to add <strong style={{color: 'rgb(122, 168, 43)'}}>Walls</strong> and watch how the algorithm navigates
 							around them
 						</p>
 					</Modal.Description>
@@ -181,7 +181,7 @@ const Modals = () => {
 					<Modal.Description>
 						<p>
 							Click the dropdown menu and choose between <strong>Breadth First Search </strong>
-							and <strong>Depth First Search</strong>. Click <strong style={{color: 'green'}}>begin</strong> and watch what happens!
+							and <strong>Depth First Search</strong>. Click <strong style={{color: 'blue'}}>Begin</strong> and watch what happens!
 						</p>
 					</Modal.Description>
 				</Modal.Content>
