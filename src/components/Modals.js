@@ -35,7 +35,6 @@ const Modals = () => {
 				<Modal.Header>Welcome to my path visualization app!</Modal.Header>
 				<Modal.Content image>
 					<Modal.Description>
-						{/* <Header>Welcome to my path visualization app!</Header> */}
 						<p>
 							If you want to jump right in, just click <strong>Skip</strong>;
 							otherwise click
