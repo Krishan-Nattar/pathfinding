@@ -23,10 +23,9 @@ const Pathfinder = (props) => {
 	const columnCount = 25;
 
 	// Prevent mouse clicks while visualizations are occuring
-	const stopClicking = () =>{
+	const stopClicking = () => {
 		document.querySelector('.App').classList.toggle('no-clicks');
-
-	}
+	};
 	useEffect(() => {
 		if (visitedNodes) {
 			let ms = 16;
@@ -44,12 +43,10 @@ const Pathfinder = (props) => {
 				let column = nextNode.column;
 
 				const currentNode = document.getElementById(`${row}-${column}`);
-				console.log(currentNode, row, column);
 				currentNode.classList.toggle('visited');
 			}, ms);
 			// if(!finished){setTimeout(stopClicking, timing);}
 		}
-
 	}, [visitedNodes]);
 
 	// Creates an array of nodes located around the current node.
@@ -175,7 +172,7 @@ const Pathfinder = (props) => {
 			// 	stopClicking()
 			// }
 			let ms = 100;
-			let timing = ms * finalPath.length
+			let timing = ms * finalPath.length;
 			let nodeCopy = [...finalPath];
 			nodeCopy.shift();
 
@@ -242,7 +239,6 @@ const Pathfinder = (props) => {
 
 	// Handles click the "Begin" button
 	const handleStartAlgorithm = () => {
-		
 		setSelectStartNode(false);
 		setSelectEndNode(false);
 		let visitedNodes = document.querySelectorAll('.visited');

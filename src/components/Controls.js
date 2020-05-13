@@ -1,6 +1,21 @@
 import React from 'react';
 import { Button, Select } from 'semantic-ui-react';
 
+// const myFunction = (param1, param2) =>{
+// 	this.something();
+// 	console.log(param1)
+// }
+
+// let myObj = {
+// 	something: function(){
+// 		console.log('hi')
+// 	}
+// }
+
+// myFunction.bind(myObj, "hello")
+
+
+// myFunction('param2')
 const Controls = (props) => {
 	// Search options for dropdown menu
 	const options = [

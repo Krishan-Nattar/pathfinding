@@ -5,6 +5,14 @@
 .no-clicks{
   pointer-events: none;
 }
+
+.row-one-arrows{
+  margin-left: 3px !important;
+}
+
+.row-one-block{
+  margin-left: 4px;
+}
 /* 
 .App-logo {
   height: 40vmin;
