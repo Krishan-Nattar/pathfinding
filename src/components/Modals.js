@@ -156,7 +156,10 @@ const Modals = () => {
 						<br />
 						<p>
 							Click/drag to add <strong style={{color: 'rgb(122, 168, 43)'}}>Walls</strong> and watch how the algorithm navigates
-							around them
+							around them.
+						</p>
+						<p>
+							Click again to remove a <strong style={{color: 'rgb(122, 168, 43)'}}>Wall</strong> you've already set!
 						</p>
 					</Modal.Description>
 				</Modal.Content>
