@@ -29,7 +29,6 @@ const Controls = (props) => {
 				Clear Grid
 			</Button>
 			<Button
-				// color="lightsalmon"
 				style={{backgroundColor:'lightsalmon', color:'white'}}
 				onClick={props.handleSelectStartingNode}
 				className={`${props.selectStartNode ? 'disabled' : ''}`}>
@@ -37,7 +36,6 @@ const Controls = (props) => {
 			</Button>
 			<Button
 			style={{backgroundColor: 'violet', color:'white'}}
-				// color="violet"
 				onClick={props.handleSelectEndingNode}
 				className={`${props.selectEndNode ? 'disabled' : ''}`}>
 				Place Ending Node
@@ -45,6 +43,8 @@ const Controls = (props) => {
 			<Button color="blue" onClick={props.handleStartAlgorithm}>
 				Begin
 			</Button>
+			
+
 			<Select
 				compact
 				options={options}

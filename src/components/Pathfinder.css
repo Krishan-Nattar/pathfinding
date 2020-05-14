@@ -29,6 +29,11 @@
 .visited {
 	animation: wipe 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards;
 }
+
+.dotted-underline{
+	text-decoration-line: underline !important;
+	text-decoration-style: dotted !important;
+}
 @keyframes wipe {
 	0% {
 		/* background-color: white; */

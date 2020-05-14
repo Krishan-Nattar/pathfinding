@@ -40,8 +40,8 @@ const Modals = () => {
 						<p>
 							If you want to jump right in, just click <strong>Skip</strong>;
 							otherwise click
-							<strong style={{ color: 'green' }}> Next</strong> for a walkthrough
-							of how this works!
+							<strong style={{ color: 'green' }}> Next</strong> for a
+							walkthrough of how this works!
 						</p>
 					</Modal.Description>
 				</Modal.Content>
@@ -88,9 +88,11 @@ const Modals = () => {
 						</div>
 						<br />
 						<p>
-							After you place a <strong style={{color: 'lightsalmon'}}>Starting Node</strong> and an <strong style={{color: 'violet'}}>Ending Node</strong> you get to see
-							a visualization of how a search algorithm finds its way between
-							them!
+							After you place a{' '}
+							<strong style={{ color: 'lightsalmon' }}>Starting Node</strong>{' '}
+							and an <strong style={{ color: 'violet' }}>Ending Node</strong>{' '}
+							you get to see a visualization of how a search algorithm finds its
+							way between them!
 						</p>
 					</Modal.Description>
 				</Modal.Content>
@@ -112,16 +114,10 @@ const Modals = () => {
 			<Modal dimmer={true} open={open3} onClose={close}>
 				<Modal.Header>Placing Walls</Modal.Header>
 				<Modal.Content image>
-					<Image wrapped 
-					// size="large" 
-					src="/modal2.PNG" />
+					<Image wrapped src="/modal2.PNG" />
 					<Modal.Description>
 						<br />
 						<div className="node-arrows">
-							<Popup
-								content="The search algorithm will start from this node."
-								trigger={<div className="node legend-start"></div>}
-							/>
 							<Icon className="arrow right" color="purple" />
 							<Icon className="arrow right" color="purple" />
 							<Icon className="arrow right" color="purple" />
@@ -158,16 +154,19 @@ const Modals = () => {
 						</div>
 						<br />
 						<p>
-							Click/drag to add <strong style={{color: 'rgb(122, 168, 43)'}}>Walls</strong> and watch how the algorithm navigates
-							around them.
+							Click/drag to add{' '}
+							<strong style={{ color: 'rgb(122, 168, 43)' }}>Walls</strong> and
+							watch how the algorithm navigates around them.
 						</p>
 						<p>
-							Click again to remove a <strong style={{color: 'rgb(122, 168, 43)'}}>Wall</strong> you've already set!
+							Click again to remove a{' '}
+							<strong style={{ color: 'rgb(122, 168, 43)' }}>Wall</strong>{' '}
+							you've already set!
 						</p>
 					</Modal.Description>
 				</Modal.Content>
 				<Modal.Actions>
-				<Button
+					<Button
 						color="orange"
 						icon="angle left"
 						labelPosition="left"
@@ -190,16 +189,41 @@ const Modals = () => {
 			{/* Modal 4 */}
 			<Modal dimmer={true} open={open4} onClose={close}>
 				<Modal.Header>Choose an algorithm</Modal.Header>
-				<Modal.Content image>
+				<Modal.Content>
 					<Modal.Description>
 						<p>
-							Click the dropdown menu and choose between <strong>Breadth First Search </strong>
-							and <strong>Depth First Search</strong>. Click <strong style={{color: 'blue'}}>Begin</strong> and watch what happens!
+							Click the dropdown menu and choose between{' '}
+							<Popup
+								content="Starting at the root node,
+								we explore all neighbor nodes at the present depth level. We move
+								outward and search every subsequent depth level until the ending
+								node is discovered."
+								trigger={
+									<strong className="dotted-underline">
+										Breadth First Search
+									</strong>
+								}
+							/>{' '}
+							and{' '}
+							<Popup
+								content="Starting at the root node,
+								we explore one direction until we either find the ending node or are forced to backtrack and expand on other nodes in the same manner."
+								trigger={
+									<strong className="dotted-underline">
+										Depth First Search
+									</strong>
+								}
+							/>
+							.
+						</p>
+						<p>
+							Click <strong style={{ color: 'blue' }}>Begin</strong> and watch
+							what happens!
 						</p>
 					</Modal.Description>
 				</Modal.Content>
 				<Modal.Actions>
-				<Button
+					<Button
 						color="orange"
 						icon="angle left"
 						labelPosition="left"
