@@ -13,7 +13,7 @@ function App() {
 	return (
 		<Router>
 			<div className="App" onMouseUp={handleMouseUp}>
-				<nav>
+				{/* <nav>
 					<ul>
 						<li>
 							<Link to="/">Algorithms</Link>
@@ -22,7 +22,7 @@ function App() {
 							<Link to="/game">Game</Link>
 						</li>
 					</ul>
-				</nav>
+				</nav> */}
 				<Route path="/game">
 					<Game  mouseDown={mouseDown} setMouseDown={setMouseDown} />
 				</Route>
