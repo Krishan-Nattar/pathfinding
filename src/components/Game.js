@@ -24,8 +24,8 @@ function useInterval(callback, delay) {
 
 const Game = (props) => {
 	const [nodes, setNodes] = useState([]);
-	const [selectStartNode, setSelectStartNode] = useState(false);
-	const [selectEndNode, setSelectEndNode] = useState(false);
+    const [selectStartNode, setSelectStartNode] = useState(false);
+    const [selectEndNode, setSelectEndNode] = useState(false);
 	const [visitedNodes, setVisitedNodes] = useState();
 	const [head, setHead] = useState();
 	const [direction, setDirection] = useState('e');
@@ -78,23 +78,23 @@ const Game = (props) => {
 	const animatePath = (shouldShift = true) => {
 		let currentPath = [...path];
 		if (currentPath.length > 0) {
-			for (const node of currentPath) {
-				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
-				if (thisNode.classList.contains('visiting')) {
-					thisNode.classList.toggle(`visiting`);
-				}
-			}
+
+            let thisNode = document.getElementById(`${currentPath[0][0]}-${currentPath[0][1]}`);
+				
+
 
 			if (shouldShift) {
-				currentPath.shift();
-			}
-			currentPath.push(head);
-			for (const node of currentPath) {
-				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
-				if (!thisNode.classList.contains('visiting')) {
+                currentPath.shift();
+                if (thisNode.classList.contains('visiting')) {
 					thisNode.classList.toggle(`visiting`);
 				}
 			}
+			currentPath.push(head);
+
+            let headNode = document.getElementById(`${head[0]}-${head[1]}`);
+            if (!headNode.classList.contains('visiting')) {
+                headNode.classList.toggle(`visiting`);
+            }
 		}
 		return currentPath;
     };
@@ -182,7 +182,8 @@ const Game = (props) => {
 
 	// Clears the board of all nodes and resets back to original state
 	const handleClearSelected = () => {
-		setSelectEndNode(false);
+        setPath([])
+        setHead()
 		setSelectStartNode(false);
 		initializeNodes();
 		for (let row = 0; row < rowCount; row++) {
@@ -195,13 +196,11 @@ const Game = (props) => {
 	// Handles clicking the "Place Starting Node" button
 	const handleSelectStartingNode = (e) => {
 		setSelectStartNode(true);
-		setSelectEndNode(false);
 	};
 
 	// Handles click the "Begin" button
 	const handleStartAlgorithm = () => {
 		setSelectStartNode(false);
-		setSelectEndNode(false);
 
 		// Removing css styling from previous animation
 		let visitedNodes = document.querySelectorAll('.visited');
@@ -261,7 +260,7 @@ const Game = (props) => {
 				handleClearSelected={handleClearSelected}
 				handleSelectStartingNode={handleSelectStartingNode}
 				selectStartNode={selectStartNode}
-				selectEndNode={selectEndNode}
+				// selectEndNode={selectEndNode}
 				handleDirection={handleDirection}
 				handleStartAlgorithm={handleStartAlgorithm}
 			/>
