@@ -24,9 +24,8 @@ function useInterval(callback, delay) {
 
 const Game = (props) => {
 	const [nodes, setNodes] = useState([]);
-    const [selectStartNode, setSelectStartNode] = useState(false);
-    const [selectEndNode, setSelectEndNode] = useState(false);
-	const [visitedNodes, setVisitedNodes] = useState();
+	const [selectStartNode, setSelectStartNode] = useState(false);
+	const [selectEndNode, setSelectEndNode] = useState(false);
 	const [head, setHead] = useState();
 	const [direction, setDirection] = useState('e');
 	const [path, setPath] = useState([]);
@@ -41,26 +40,26 @@ const Game = (props) => {
 	// Prevent mouse clicks while visualizations are occuring
 	const stopClicking = () => {
 		document.querySelector('.App').classList.toggle('no-clicks');
-    };
-    
-    useEffect(()=>{
-        document.addEventListener('keypress', handleKeyPress);
+	};
 
-        return () => document.removeEventListener('keypress', handleKeyPress);
-    },[])
+	useEffect(() => {
+		document.addEventListener('keypress', handleKeyPress);
 
-    const handleKeyPress = (e) =>{
-        if(e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd'){
-            handleDirection(e.key)
-        }
-    }
+		return () => document.removeEventListener('keypress', handleKeyPress);
+	}, []);
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd') {
+			handleDirection(e.key);
+		}
+	};
 
 	const handleDirection = (dir) => {
 		if (dir === 'w') {
 			if (path.length === 0 || direction !== 's') {
 				setDirection('n');
 			}
-		} else if (dir ==='d') {
+		} else if (dir === 'd') {
 			if (path.length === 0 || direction !== 'w') {
 				setDirection('e');
 			}
@@ -75,60 +74,56 @@ const Game = (props) => {
 		}
 	};
 
+
 	const animatePath = (shouldShift = true) => {
-		let currentPath = [...path];
+		let currentPath = JSON.parse(JSON.stringify(path));
 		if (currentPath.length > 0) {
-
-            let thisNode = document.getElementById(`${currentPath[0][0]}-${currentPath[0][1]}`);
-				
-
+			let thisNode = document.getElementById(
+				`${currentPath[0][0]}-${currentPath[0][1]}`,
+			);
 
 			if (shouldShift) {
-                currentPath.shift();
-                if (thisNode.classList.contains('visiting-node')) {
+				currentPath.shift();
+				if (thisNode.classList.contains('visiting-node')) {
 					thisNode.classList.toggle(`visiting-node`);
 				}
 			}
 			currentPath.push(head);
 
-            let headNode = document.getElementById(`${head[0]}-${head[1]}`);
-            if (!headNode.classList.contains('visiting-node')) {
-                headNode.classList.toggle(`visiting-node`);
-            }
+			let headNode = document.getElementById(`${head[0]}-${head[1]}`);
+			if (!headNode.classList.contains('visiting-node')) {
+				headNode.classList.toggle(`visiting-node`);
+			}
 		}
 		return currentPath;
-    };
-    
-    
-    // return () => 
-    
-	const moveHead = (dir) => {
-        
+	};
+
+	const moveHead = () => {
 		let row = head[0];
 		let column = head[1];
 		let currentHead = [...head];
 		let currentNode = document.getElementById(`${row}-${column}`);
 		currentNode.classList.toggle('game-start-node');
 
-		if (dir === 'n') {
+		if (direction === 'n') {
 			if (row > 0) {
 				row -= 1;
 			} else {
 				row = rowCount - 1;
 			}
-		} else if (dir === 'e') {
+		} else if (direction === 'e') {
 			if (column < columnCount - 1) {
 				column += 1;
 			} else {
 				column = 0;
 			}
-		} else if (dir === 's') {
+		} else if (direction === 's') {
 			if (row < rowCount - 1) {
 				row += 1;
 			} else {
 				row = 0;
 			}
-		} else if (dir === 'w') {
+		} else if (direction === 'w') {
 			if (column > 0) {
 				column -= 1;
 			} else {
@@ -138,10 +133,6 @@ const Game = (props) => {
 
 		setHead([row, column]);
 		currentNode = document.getElementById(`${row}-${column}`);
-		if (!currentNode) {
-			setHead();
-			return;
-		}
 		let newPath;
 		if (currentNode.classList.contains('blocked')) {
 			newPath = animatePath(false);
@@ -163,8 +154,8 @@ const Game = (props) => {
 
 	useInterval(() => {
 		if (head && direction) {
-			moveHead(direction);
-        }
+			moveHead();
+		}
 	}, 100);
 
 	// Used to remove starting/ending nodes when placing a new one somewhere on the grid
@@ -174,8 +165,8 @@ const Game = (props) => {
 				let thisNode = document.getElementById(`${row}-${column}`);
 
 				if (thisNode.classList.contains(`${title}-node`)) {
-                    console.log("YPO")
-                    console.log(title)
+					console.log('YPO');
+					console.log(title);
 					thisNode.classList.toggle(`${title}-node`);
 				}
 			}
@@ -184,8 +175,8 @@ const Game = (props) => {
 
 	// Clears the board of all nodes and resets back to original state
 	const handleClearSelected = () => {
-        setPath([])
-        setHead()
+		setPath([]);
+		setHead();
 		setSelectStartNode(false);
 		initializeNodes();
 		for (let row = 0; row < rowCount; row++) {
@@ -262,7 +253,6 @@ const Game = (props) => {
 				handleClearSelected={handleClearSelected}
 				handleSelectStartingNode={handleSelectStartingNode}
 				selectStartNode={selectStartNode}
-				// selectEndNode={selectEndNode}
 				handleDirection={handleDirection}
 				handleStartAlgorithm={handleStartAlgorithm}
 			/>
@@ -288,8 +278,8 @@ const Game = (props) => {
 										row={node.row}
 										column={node.column}
 										nodes={nodes}
-                                        setNodes={setNodes}
-                                        game = {true}
+										setNodes={setNodes}
+										game={true}
 									/>
 								);
 							})}
