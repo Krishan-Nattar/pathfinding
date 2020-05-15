@@ -85,15 +85,15 @@ const Game = (props) => {
 
 			if (shouldShift) {
                 currentPath.shift();
-                if (thisNode.classList.contains('visiting')) {
-					thisNode.classList.toggle(`visiting`);
+                if (thisNode.classList.contains('visiting-node')) {
+					thisNode.classList.toggle(`visiting-node`);
 				}
 			}
 			currentPath.push(head);
 
             let headNode = document.getElementById(`${head[0]}-${head[1]}`);
-            if (!headNode.classList.contains('visiting')) {
-                headNode.classList.toggle(`visiting`);
+            if (!headNode.classList.contains('visiting-node')) {
+                headNode.classList.toggle(`visiting-node`);
             }
 		}
 		return currentPath;
@@ -108,7 +108,7 @@ const Game = (props) => {
 		let column = head[1];
 		let currentHead = [...head];
 		let currentNode = document.getElementById(`${row}-${column}`);
-		currentNode.classList.toggle('start-node');
+		currentNode.classList.toggle('game-start-node');
 
 		if (dir === 'n') {
 			if (row > 0) {
@@ -150,7 +150,7 @@ const Game = (props) => {
 			}
 
 			currentNode.classList.toggle('blocked');
-		} else if (currentNode.classList.contains('visiting')) {
+		} else if (currentNode.classList.contains('visiting-node')) {
 			alert('LOSE');
 			setHead();
 			return;
@@ -158,7 +158,7 @@ const Game = (props) => {
 			newPath = animatePath();
 		}
 		setPath(newPath);
-		currentNode.classList.toggle('start-node');
+		currentNode.classList.toggle('game-start-node');
 	};
 
 	useInterval(() => {
@@ -174,6 +174,8 @@ const Game = (props) => {
 				let thisNode = document.getElementById(`${row}-${column}`);
 
 				if (thisNode.classList.contains(`${title}-node`)) {
+                    console.log("YPO")
+                    console.log(title)
 					thisNode.classList.toggle(`${title}-node`);
 				}
 			}
@@ -204,12 +206,12 @@ const Game = (props) => {
 
 		// Removing css styling from previous animation
 		let visitedNodes = document.querySelectorAll('.visited');
-		let pathNodes = document.querySelectorAll('.visiting');
+		let pathNodes = document.querySelectorAll('.visiting-node');
 		for (const node of visitedNodes) {
 			node.classList.toggle('visited');
 		}
 		for (const node of pathNodes) {
-			node.classList.toggle('visiting');
+			node.classList.toggle('visiting-node');
 		}
 
 		let beginningNode;
@@ -219,7 +221,7 @@ const Game = (props) => {
 				if (
 					document
 						.getElementById(`${row}-${column}`)
-						.classList.contains('start-node')
+						.classList.contains('game-start-node')
 				) {
 					beginningNode = nodes[row][column];
 					setHead([row, column]);
@@ -286,7 +288,8 @@ const Game = (props) => {
 										row={node.row}
 										column={node.column}
 										nodes={nodes}
-										setNodes={setNodes}
+                                        setNodes={setNodes}
+                                        game = {true}
 									/>
 								);
 							})}

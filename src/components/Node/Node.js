@@ -9,8 +9,14 @@ const Node = (props) => {
 
 		if (props.selectStartNode && !thisNode.classList.contains('end-node')) {
 			props.setSelectStartNode(false);
-			props.removeNode('start');
-			thisNode.classList.toggle('start-node');
+			if(props.game){
+				props.removeNode('game-start');
+				thisNode.classList.toggle('game-start-node');
+			} else{
+
+				props.removeNode('start');
+				thisNode.classList.toggle('start-node');
+			}
 		} else if (
 			props.selectEndNode &&
 			!thisNode.classList.contains('start-node')
