@@ -34,18 +34,13 @@
 	text-decoration-line: underline !important;
 	text-decoration-style: dotted !important;
 }
+
 @keyframes wipe {
 	0% {
-		/* background-color: white; */
-		/* border-radius: 50%; */
-		/* outline: none; */
 		border-radius: 50%;
-		/* outline: none; */
 		transform: scale(0.7);
 		background-color: #04acff;
 	}
-	/* 10% {
-	} */
 	30% {
 		transform: scale(1.1);
 	}
@@ -59,25 +54,6 @@
 .row-two{
 	margin-left: 86px;
 }
-/* 
-@keyframes wipe {
-	0% {
-		background-color: white;
-		border-radius: 50%;
-		outline: none;
-	}
-	10% {
-		background-color: #04acff;
-	}
-	30% {
-		transform: scale(0.7);
-	}
-
-	100% {
-		background-color: teal;
-		transform: scale(1);
-	}
-} */
 
 @keyframes wipe-finish {
 	0% {

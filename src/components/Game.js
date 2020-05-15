@@ -1,13 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Node from './Node/Node';
 import { Queue, Stack } from './DataStructures';
 import Modals from './Modals';
 import Legend from './Legend';
-import Controls from './Controls';
+import GameControls from './GameControls';
 
-import './Pathfinder.css';
+// import './Pathfinder.css';
 
-const Pathfinder = (props) => {
+function useInterval(callback, delay) {
+	const savedCallback = useRef();
+
+	// Remember the latest function.
+	useEffect(() => {
+		savedCallback.current = callback;
+	}, [callback]);
+
+	// Set up the interval.
+	useEffect(() => {
+		function tick() {
+			savedCallback.current();
+		}
+		if (delay !== null) {
+			let id = setInterval(tick, delay);
+			return () => clearInterval(id);
+		}
+	}, [delay]);
+}
+
+const Game = (props) => {
 	const [nodes, setNodes] = useState([]);
 	const [selectStartNode, setSelectStartNode] = useState(false);
 	const [selectEndNode, setSelectEndNode] = useState(false);
@@ -17,9 +37,17 @@ const Pathfinder = (props) => {
 	const [stack, setStack] = useState();
 	const [finished, setFinished] = useState(false);
 	const [finalPath, setFinalPath] = useState();
+	const [head, setHead] = useState();
+	const [direction, setDirection] = useState('e');
+	const [count, setCount] = useState(0);
+	const [path, setPath] = useState([]);
+
+	// useEffect(()=>{
+	//     console.log(count)
+	// },[count]);
 
 	// This will eventually connect to a range slider for a user to set their own animation speed
-	let [speed, setSpeed] = useState(16)
+	let [speed, setSpeed] = useState(16);
 
 	// The grid's row and column count
 	const rowCount = 20;
@@ -71,131 +99,125 @@ const Pathfinder = (props) => {
 		return checkNodes;
 	};
 
-	// Runs a depth first search for end node
-	const handleDFS = () => {
-		let q = new Stack(stack.nodes);
-
-		let copyNodes = JSON.parse(JSON.stringify(nodes));
-
-		let visitedArray = [];
-		while (!q.isEmpty()) {
-			let currentPath = q.pop();
-
-			let currentNode = currentPath[currentPath.length - 1];
-
-			let checkNodes = checkNearbyNodes(
-				currentNode.row,
-				currentNode.column,
-				copyNodes,
-			);
-
-			for (const node of checkNodes) {
-				let thisNode = document.getElementById(`${node.row}-${node.column}`);
-				if (
-					!node.wasVisited &&
-					!thisNode.classList.contains('end-node') &&
-					!thisNode.classList.contains('blocked') &&
-					!thisNode.classList.contains('start-node')
-				) {
-					visitedArray.push({ row: node.row, column: node.column });
-					copyNodes[node.row][node.column].wasVisited = true;
-					q.push([...currentPath, { row: node.row, column: node.column }]);
-					continue;
-				}
-				if (thisNode.classList.contains('end-node')) {
-					setFinalPath(currentPath);
-					setVisitedNodes(visitedArray);
-
-					return;
-				}
+	const handleDirection = (dir) => {
+		if (dir === 'n') {
+			if (path.length === 0 || direction !== 's') {
+				setDirection('n');
+			}
+		} else if (dir === 'e') {
+			if (path.length === 0 || direction !== 'w') {
+				setDirection('e');
+			}
+		} else if (dir === 's') {
+			if (path.length === 0 || direction !== 'n') {
+				setDirection('s');
+			}
+		} else if (dir === 'w') {
+			if (path.length === 0 || direction !== 'e') {
+				setDirection('w');
 			}
 		}
-		setVisitedNodes(visitedArray);
-	};
-
-	// Runs a breadth first search for end node
-	const handleBFS = () => {
-		let q = new Queue(queue.nodes);
-
-		let copyNodes = JSON.parse(JSON.stringify(nodes));
-
-		let visitedArray = [];
-		while (!q.isEmpty()) {
-			let currentPath = q.dequeue();
-			let currentNode = currentPath[currentPath.length - 1];
-			let checkNodes = checkNearbyNodes(
-				currentNode.row,
-				currentNode.column,
-				copyNodes,
-			);
-
-			for (const node of checkNodes) {
-				let thisNode = document.getElementById(`${node.row}-${node.column}`);
-
-				if (
-					!node.wasVisited &&
-					!thisNode.classList.contains('end-node') &&
-					!thisNode.classList.contains('blocked') &&
-					!thisNode.classList.contains('start-node')
-				) {
-					visitedArray.push({ row: node.row, column: node.column });
-					copyNodes[node.row][node.column].wasVisited = true;
-					q.enqueue([...currentPath, { row: node.row, column: node.column }]);
-					continue;
-				}
-				if (thisNode.classList.contains('end-node')) {
-					setFinalPath(currentPath);
-					setVisitedNodes(visitedArray);
-
-					return;
-				}
-			}
-		}
-		setVisitedNodes(visitedArray);
 	};
 
 	useEffect(() => {
-		if (queue) {
-			setFinalPath();
-			handleBFS();
+		if (path.length > 0) {
+			// console.log(path);
 		}
-	}, [queue]);
+	}, [path]);
 
-	useEffect(() => {
-		if (stack) {
-			setFinalPath();
-			handleDFS();
-		}
-	}, [stack]);
+	const animatePath = (shouldShift = true) => {
+		let currentPath = [...path];
+		if (currentPath.length > 0) {
+			console.log(currentPath);
+			for (const node of currentPath) {
+				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
+				if (thisNode.classList.contains('visiting')) {
+					thisNode.classList.toggle(`visiting`);
+					console.log(`Removed visiting from ${node}`);
+				}
+			}
 
-	useEffect(() => {
-		if (finalPath && finished) {
-			// if(!document.querySelector('App').classList.contains('no-clicks')){
-
-			// 	stopClicking()
+			if (shouldShift) {
+				currentPath.shift();
+			}
+			// else{
+			currentPath.push(head);
 			// }
-			let ms = 100;
-			let timing = ms * finalPath.length;
-			let nodeCopy = [...finalPath];
-			nodeCopy.shift();
-
-			let animation = setInterval(() => {
-				if (nodeCopy.length === 0) {
-					clearInterval(animation);
-					setFinished(false);
-					return;
+			for (const node of currentPath) {
+				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
+				if (!thisNode.classList.contains('visiting')) {
+					thisNode.classList.toggle(`visiting`);
+					console.log(`Added visiting to  ${node}`);
 				}
-				let nextNode = nodeCopy.shift();
-				let row = nextNode.row;
-				let column = nextNode.column;
-
-				const currentNode = document.getElementById(`${row}-${column}`);
-				currentNode.classList.toggle('visiting');
-				currentNode.classList.toggle('visited');
-			}, ms);
-			// setTimeout(stopClicking, timing);
+				// thisNode.classList.toggle(`visiting`);
+			}
 		}
-	}, [finalPath, finished]);
+		return currentPath;
+	};
+
+	const moveHead = (dir) => {
+		let row = head[0];
+		let column = head[1];
+		let currentHead = [...head];
+		let currentNode = document.getElementById(`${row}-${column}`);
+		currentNode.classList.toggle('start-node');
+
+		if (dir === 'n') {
+			if (row > 0) {
+				row -= 1;
+			} else {
+				row = rowCount - 1;
+			}
+		} else if (dir === 'e') {
+			if (column < columnCount - 1) {
+				column += 1;
+			} else {
+				column = 0;
+			}
+		} else if (dir === 's') {
+			if (row < rowCount - 1) {
+				row += 1;
+			} else {
+				row = 0;
+			}
+		} else if (dir === 'w') {
+			if (column > 0) {
+				column -= 1;
+			} else {
+				column = columnCount - 1;
+			}
+		}
+
+		setHead([row, column]);
+		currentNode = document.getElementById(`${row}-${column}`);
+		if (!currentNode) {
+			setHead();
+			return;
+		}
+		let newPath;
+		if (currentNode.classList.contains('blocked')) {
+			newPath = animatePath(false);
+			if (newPath.length < 1) {
+				newPath.push(currentHead);
+			}
+
+			currentNode.classList.toggle('blocked');
+		} else if (currentNode.classList.contains('visiting')) {
+			alert('LOSE');
+			setHead();
+			return;
+		} else {
+			newPath = animatePath();
+		}
+		setPath(newPath);
+		currentNode.classList.toggle('start-node');
+	};
+
+	useInterval(() => {
+		if (head && direction) {
+			moveHead(direction);
+		}
+	}, 500);
 
 	// Used to remove starting/ending nodes when placing a new one somewhere on the grid
 	const removeNode = (title) => {
@@ -236,23 +258,25 @@ const Pathfinder = (props) => {
 	};
 
 	// Handles choosing an option in the dropdown menu
-	const handleSelectChange = (e) => {
-		setSelected(e.target.textContent);
-	};
+	// const handleSelectChange = (e) => {
+	// 	setSelected(e.target.textContent);
+	// };
 
 	// Handles click the "Begin" button
 	const handleStartAlgorithm = () => {
 		setSelectStartNode(false);
 		setSelectEndNode(false);
+
+		// Removing css styling from previous animation
 		let visitedNodes = document.querySelectorAll('.visited');
 		let pathNodes = document.querySelectorAll('.visiting');
-
 		for (const node of visitedNodes) {
 			node.classList.toggle('visited');
 		}
 		for (const node of pathNodes) {
 			node.classList.toggle('visiting');
 		}
+
 		let beginningNode;
 
 		thisloop: for (let row = 0; row < rowCount; row++) {
@@ -263,34 +287,13 @@ const Pathfinder = (props) => {
 						.classList.contains('start-node')
 				) {
 					beginningNode = nodes[row][column];
+					setHead([row, column]);
 					break thisloop;
 				}
 			}
 		}
 		if (!beginningNode) {
 			return;
-		}
-		// stopClicking()
-		if (selected === 'Breadth First Search') {
-			let q = new Queue();
-			q.enqueue([
-				{
-					row: beginningNode.row,
-					column: beginningNode.column,
-				},
-			]);
-
-			setQueue(q);
-		} else {
-			let s = new Stack();
-			s.push([
-				{
-					row: beginningNode.row,
-					column: beginningNode.column,
-				},
-			]);
-
-			setStack(s);
 		}
 	};
 
@@ -318,16 +321,18 @@ const Pathfinder = (props) => {
 
 	return (
 		<>
-			<Modals />
-			<Legend />
-			<Controls
+			{/* <Modals /> */}
+			{/* <Legend /> */}
+			<GameControls
 				handleClearSelected={handleClearSelected}
 				handleSelectStartingNode={handleSelectStartingNode}
 				selectStartNode={selectStartNode}
 				selectEndNode={selectEndNode}
-				handleSelectChange={handleSelectChange}
+				// handleSelectChange={handleSelectChange}
+				handleDirection={handleDirection}
 				handleStartAlgorithm={handleStartAlgorithm}
 				handleSelectEndingNode={handleSelectEndingNode}
+				// path={path}
 			/>
 
 			<div
@@ -363,4 +368,4 @@ const Pathfinder = (props) => {
 	);
 };
 
-export default Pathfinder;
+export default Game;
