@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Node from './Node/Node';
-import { Queue, Stack } from './DataStructures';
-import Modals from './Modals';
-import Legend from './Legend';
 import GameControls from './GameControls';
-
-// import './Pathfinder.css';
 
 function useInterval(callback, delay) {
 	const savedCallback = useRef();
@@ -31,20 +26,10 @@ const Game = (props) => {
 	const [nodes, setNodes] = useState([]);
 	const [selectStartNode, setSelectStartNode] = useState(false);
 	const [selectEndNode, setSelectEndNode] = useState(false);
-	const [selected, setSelected] = useState('Breadth First Search');
 	const [visitedNodes, setVisitedNodes] = useState();
-	const [queue, setQueue] = useState();
-	const [stack, setStack] = useState();
-	const [finished, setFinished] = useState(false);
-	const [finalPath, setFinalPath] = useState();
 	const [head, setHead] = useState();
 	const [direction, setDirection] = useState('e');
-	const [count, setCount] = useState(0);
 	const [path, setPath] = useState([]);
-
-	// useEffect(()=>{
-	//     console.log(count)
-	// },[count]);
 
 	// This will eventually connect to a range slider for a user to set their own animation speed
 	let [speed, setSpeed] = useState(16);
@@ -56,55 +41,26 @@ const Game = (props) => {
 	// Prevent mouse clicks while visualizations are occuring
 	const stopClicking = () => {
 		document.querySelector('.App').classList.toggle('no-clicks');
-	};
-	useEffect(() => {
-		if (visitedNodes) {
-			let ms = speed;
-			let timing = visitedNodes.length * ms + 100;
-			let nodeCopy = [...visitedNodes];
+    };
+    
+    useEffect(()=>{
+        document.addEventListener('keypress', handleKeyPress);
 
-			let animation = setInterval(() => {
-				if (nodeCopy.length === 0) {
-					clearInterval(animation);
-					setFinished(true);
-					return;
-				}
-				let nextNode = nodeCopy.shift();
-				let row = nextNode.row;
-				let column = nextNode.column;
+        return () => document.removeEventListener('keypress', handleKeyPress);
+    },[])
 
-				const currentNode = document.getElementById(`${row}-${column}`);
-				currentNode.classList.toggle('visited');
-			}, ms);
-			// if(!finished){setTimeout(stopClicking, timing);}
-		}
-	}, [visitedNodes]);
-
-	// Creates an array of nodes located around the current node.
-	const checkNearbyNodes = (rowNumber, colNumber, copyNodes) => {
-		let checkNodes = [];
-		if (rowNumber > 0) {
-			checkNodes.push(copyNodes[rowNumber - 1][colNumber]);
-		}
-		if (colNumber > 0) {
-			checkNodes.push(copyNodes[rowNumber][colNumber - 1]);
-		}
-
-		if (rowNumber < rowCount - 1) {
-			checkNodes.push(copyNodes[rowNumber + 1][colNumber]);
-		}
-		if (colNumber < columnCount - 1) {
-			checkNodes.push(copyNodes[rowNumber][colNumber + 1]);
-		}
-		return checkNodes;
-	};
+    const handleKeyPress = (e) =>{
+        if(e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd'){
+            handleDirection(e.key)
+        }
+    }
 
 	const handleDirection = (dir) => {
-		if (dir === 'n') {
+		if (dir === 'w') {
 			if (path.length === 0 || direction !== 's') {
 				setDirection('n');
 			}
-		} else if (dir === 'e') {
+		} else if (dir ==='d') {
 			if (path.length === 0 || direction !== 'w') {
 				setDirection('e');
 			}
@@ -112,50 +68,42 @@ const Game = (props) => {
 			if (path.length === 0 || direction !== 'n') {
 				setDirection('s');
 			}
-		} else if (dir === 'w') {
+		} else if (dir === 'a') {
 			if (path.length === 0 || direction !== 'e') {
 				setDirection('w');
 			}
 		}
 	};
 
-	useEffect(() => {
-		if (path.length > 0) {
-			// console.log(path);
-		}
-	}, [path]);
-
 	const animatePath = (shouldShift = true) => {
 		let currentPath = [...path];
 		if (currentPath.length > 0) {
-			console.log(currentPath);
 			for (const node of currentPath) {
 				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
 				if (thisNode.classList.contains('visiting')) {
 					thisNode.classList.toggle(`visiting`);
-					console.log(`Removed visiting from ${node}`);
 				}
 			}
 
 			if (shouldShift) {
 				currentPath.shift();
 			}
-			// else{
 			currentPath.push(head);
-			// }
 			for (const node of currentPath) {
 				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
 				if (!thisNode.classList.contains('visiting')) {
 					thisNode.classList.toggle(`visiting`);
-					console.log(`Added visiting to  ${node}`);
 				}
-				// thisNode.classList.toggle(`visiting`);
 			}
 		}
 		return currentPath;
-	};
-
+    };
+    
+    
+    // return () => 
+    
 	const moveHead = (dir) => {
+        
 		let row = head[0];
 		let column = head[1];
 		let currentHead = [...head];
@@ -216,8 +164,8 @@ const Game = (props) => {
 	useInterval(() => {
 		if (head && direction) {
 			moveHead(direction);
-		}
-	}, 500);
+        }
+	}, 100);
 
 	// Used to remove starting/ending nodes when placing a new one somewhere on the grid
 	const removeNode = (title) => {
@@ -236,7 +184,6 @@ const Game = (props) => {
 	const handleClearSelected = () => {
 		setSelectEndNode(false);
 		setSelectStartNode(false);
-		setFinished(false);
 		initializeNodes();
 		for (let row = 0; row < rowCount; row++) {
 			for (let column = 0; column < columnCount; column++) {
@@ -250,17 +197,6 @@ const Game = (props) => {
 		setSelectStartNode(true);
 		setSelectEndNode(false);
 	};
-
-	// Handles clicking the "Place Ending Node" button
-	const handleSelectEndingNode = (e) => {
-		setSelectStartNode(false);
-		setSelectEndNode(true);
-	};
-
-	// Handles choosing an option in the dropdown menu
-	// const handleSelectChange = (e) => {
-	// 	setSelected(e.target.textContent);
-	// };
 
 	// Handles click the "Begin" button
 	const handleStartAlgorithm = () => {
@@ -321,18 +257,13 @@ const Game = (props) => {
 
 	return (
 		<>
-			{/* <Modals /> */}
-			{/* <Legend /> */}
 			<GameControls
 				handleClearSelected={handleClearSelected}
 				handleSelectStartingNode={handleSelectStartingNode}
 				selectStartNode={selectStartNode}
 				selectEndNode={selectEndNode}
-				// handleSelectChange={handleSelectChange}
 				handleDirection={handleDirection}
 				handleStartAlgorithm={handleStartAlgorithm}
-				handleSelectEndingNode={handleSelectEndingNode}
-				// path={path}
 			/>
 
 			<div

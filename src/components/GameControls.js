@@ -1,21 +1,6 @@
 import React from 'react';
 import { Button, Select } from 'semantic-ui-react';
 
-// const myFunction = (param1, param2) =>{
-// 	this.something();
-// 	console.log(param1)
-// }
-
-// let myObj = {
-// 	something: function(){
-// 		console.log('hi')
-// 	}
-// }
-
-// myFunction.bind(myObj, "hello")
-
-
-// myFunction('param2')
 const Controls = (props) => {
 	// Search options for dropdown menu
 	const options = [
@@ -34,37 +19,25 @@ const Controls = (props) => {
 				className={`${props.selectStartNode ? 'disabled' : ''}`}>
 				Place Starting Node
 			</Button>
-			{/* <Button
-			style={{backgroundColor: 'violet', color:'white'}}
-				onClick={props.handleSelectEndingNode}
-				className={`${props.selectEndNode ? 'disabled' : ''}`}>
-				Place Ending Node
-			</Button> */}
+
 			<Button color="blue" onClick={props.handleStartAlgorithm}>
 				Begin
 			</Button>
 
             <br />
-            <Button color="green" onClick={props.handleDirection.bind(null,'n')}>
-				Up
+            <Button color="green" onClick={props.handleDirection.bind(null,'w')}>
+				Up ("w")
 			</Button>
             <Button color="green" onClick={props.handleDirection.bind(null,'s')}>
-				Down
+				Down ("s")
 			</Button>
-            <Button color="green" onClick={props.handleDirection.bind(null,'w')}>
-				Left
+            <Button color="green" onClick={props.handleDirection.bind(null,'a')}>
+				Left ("a")
 			</Button>
-            <Button color="green" onClick={props.handleDirection.bind(null,'e')}>
-				Right
+            <Button color="green" onClick={props.handleDirection.bind(null,'d')}>
+				Right ("d")
 			</Button>
-			
 
-			{/* <Select
-				compact
-				options={options}
-				defaultValue="Breadth First Search"
-				onChange={props.handleSelectChange}
-			/> */}
 		</div>
 	);
 };
