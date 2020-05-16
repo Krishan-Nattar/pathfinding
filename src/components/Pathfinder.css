@@ -18,30 +18,29 @@
 	animation: wipe-start 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards !important;
 }
 
-.game-start-node{
+.game-start-node {
 	background-color: green;
 	border-radius: 50%;
 	outline: none;
-
 }
 
-.right{
+.right {
 	animation: slide-right 0.3s linear infinite !important;
 }
 
-.left{
-animation: slide-left 0.3s linear infinite !important;
+.left {
+	animation: slide-left 0.3s linear infinite !important;
 }
 
-.up{
-animation: slide-up 0.3s linear infinite !important;
+.up {
+	animation: slide-up 0.3s linear infinite !important;
 }
 
-.down{
-animation: slide-down 0.3s linear infinite !important;
+.down {
+	animation: slide-down 0.3s linear infinite !important;
 }
 
-.visiting-node{
+.visiting-node {
 	background-color: purple;
 	border-radius: 50%;
 	outline: none;
@@ -59,40 +58,36 @@ animation: slide-down 0.3s linear infinite !important;
 	animation: wipe 0.5s cubic-bezier(0.9, 0.9, 0.9, 0.9) forwards;
 }
 
-.dotted-underline{
+.dotted-underline {
 	text-decoration-line: underline !important;
 	text-decoration-style: dotted !important;
 }
 
 @keyframes slide-right {
 	0% {
-		transform: translate(-25px,0px);
+		transform: translate(-25px, 0px);
 	}
 	/* 100% {
 		transform: translate(-0px,0px);
 	} */
-	
 }
 
 @keyframes slide-left {
 	0% {
-		transform: translate(25px,0px);
+		transform: translate(25px, 0px);
 	}
-	
 }
 
 @keyframes slide-up {
 	0% {
-		transform: translate(0px,25px);
+		transform: translate(0px, 25px);
 	}
-	
 }
 
 @keyframes slide-down {
 	0% {
-		transform: translate(0px,-25px);
+		transform: translate(0px, -25px);
 	}
-	
 }
 
 @keyframes wipe {
@@ -111,7 +106,7 @@ animation: slide-down 0.3s linear infinite !important;
 	}
 }
 
-.row-two{
+.row-two {
 	margin-left: 86px;
 }
 
