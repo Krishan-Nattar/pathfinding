@@ -24,26 +24,26 @@
 	outline: none;
 }
 
-.right {
+.right1 {
 	animation: slide-right 0.3s linear infinite !important;
 }
 
-.left {
+.left1 {
 	animation: slide-left 0.3s linear infinite !important;
 }
 
-.up {
+.up1 {
 	animation: slide-up 0.3s linear infinite !important;
 }
 
-.down {
+.down1 {
 	animation: slide-down 0.3s linear infinite !important;
 }
 
 .visiting-node {
 	background-color: purple;
 	border-radius: 50%;
-	outline: none;
+	outline: none;	
 }
 
 .end-node {
@@ -66,10 +66,8 @@
 @keyframes slide-right {
 	0% {
 		transform: translate(-25px, 0px);
+		
 	}
-	/* 100% {
-		transform: translate(-0px,0px);
-	} */
 }
 
 @keyframes slide-left {

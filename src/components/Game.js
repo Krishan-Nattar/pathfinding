@@ -96,6 +96,7 @@ const Game = (props) => {
 				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
 				thisNode.className = `node`
 			}
+
 			for(const node of currentPath){
 
 				let thisNode = document.getElementById(`${node[0]}-${node[1]}`);
@@ -108,7 +109,6 @@ const Game = (props) => {
 	const moveHead = () => {
 		let row = head[0];
 		let column = head[1];
-		let currentHead = [...head];
 		let currentNode = document.getElementById(`${row}-${column}`);
 		currentNode.className ="node";
 		let dynamicClass;

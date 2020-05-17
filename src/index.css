@@ -5,6 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* -webkit-backface-visibility: hidden; */
+  /* -webkit-transform:translate3d(0,0,0); */
+  /* -webkit-transform-style: preserve-3d; */
+  /* -webkit-transform-style: flat; */
+/* -webkit-backface-visibility: hidden; */
+
 }
 
 code {
