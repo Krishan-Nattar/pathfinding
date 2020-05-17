@@ -113,28 +113,28 @@ const Game = (props) => {
 		currentNode.className ="node";
 		let dynamicClass;
 		if (direction === 'n') {
-			dynamicClass = "up"
+			dynamicClass = "up1"
 			if (row > 0) {
 				row -= 1;
 			} else {
 				row = rowCount - 1;
 			}
 		} else if (direction === 'e') {
-			dynamicClass = "right"
+			dynamicClass = "right1"
 			if (column < columnCount - 1) {
 				column += 1;
 			} else {
 				column = 0;
 			}
 		} else if (direction === 's') {
-			dynamicClass = "down"
+			dynamicClass = "down1"
 			if (row < rowCount - 1) {
 				row += 1;
 			} else {
 				row = 0;
 			}
 		} else if (direction === 'w') {
-			dynamicClass = "left"
+			dynamicClass = "left1"
 			if (column > 0) {
 				column -= 1;
 			} else {
